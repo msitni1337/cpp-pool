@@ -3,10 +3,10 @@
 class Contact
 {
     public:
-    char*f_name;
-    char*l_name;
-    char*n_name;
-    char*phone;
-    char*secret;
+    std::string f_name;
+    std::string l_name;
+    std::string n_name;
+    std::string phone;
+    std::string secret;
 };
 #endif
