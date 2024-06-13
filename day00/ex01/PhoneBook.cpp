@@ -1,6 +1,6 @@
 #include "PhoneBook.hpp"
 
-void PhoneBook::PhoneBook()
+PhoneBook::PhoneBook()
 {
     insert_index = 0;
     contacts_count = 0;
@@ -8,30 +8,38 @@ void PhoneBook::PhoneBook()
 
 void PhoneBook::add_to_book()
 {
+    std::string *input;
     Contact contact;
 
-    std::cout << "Please input contact's first name:" << std::endl;
-    std::cin >> contact.f_name;
-    std::cout << "Please input contact's last name:" << std::endl;
-    std::cin >> contact.l_name;
-    std::cout << "Please input contact's nickname:" << std::endl;
-    std::cin >> contact.n_name;
-    std::cout << "Please input contact's phone number:" << std::endl;
-    std::cin >> contact.phone;
-    std::cout << "Please input contact's darkest secret:" << std::endl;
-    std::cin >> contact.secret;
+    if ((input = get_value("Please input contact's first name:")) == NULL)
+        return;
+    contact.f_name = *input;
+    if ((input = get_value("Please input contact's last name:")) == NULL)
+        return;
+    contact.l_name = *input;
+    if ((input = get_value("Please input contact's nickname:")) == NULL)
+        return;
+    contact.n_name = *input;
+    if ((input = get_value("Please input contact's phone number:")) == NULL)
+        return;
+    contact.phone = *input;
+    if ((input = get_value("Please input contact's darkest secret:")) == NULL)
+        return;
+    contact.secret = *input;
 }
 
-std::string* get_value(char*prompt)
+std::string *PhoneBook::get_value(const char *prompt)
 {
-    std::string* result;
+    std::string *result;
 
-    result = new();
+    result = new std::string;
     std::cout << prompt << std::endl;
     std::cin >> *result;
-    if (result->)
+    if (result->length() == 0)
     {
-        /* code */
+        std::cout << "You can't leave this field empty." << std::endl;
+        delete result;
+        return NULL;
     }
-    
+    return result;
 }

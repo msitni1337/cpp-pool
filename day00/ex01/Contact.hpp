@@ -1,5 +1,10 @@
 #ifndef CONTACT_HPP
 # define CONTACT_HPP
+# include <iostream>
+# include <string>
+# include <string.h>
+# include <unistd.h>
+
 class Contact
 {
     public:
