@@ -1,8 +1,8 @@
 SRC=$(wildcard *.cpp)
 OBJ=${SRC:.cpp=.o}
 
-NAME=megaphone
-CFLAGS=-Wall -Werror -Wextra -std=c++98
+NAME=yellowbook
+CFLAGS=-Wall -Werror -Wextra -std=c++98 -g3
 CXX=c++
 
 .SECONDARY: ${OBJ}
