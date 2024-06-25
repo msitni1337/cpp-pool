@@ -8,7 +8,7 @@ void put_cap(const char*arg)
     while (arg && arg[i])
     {
         if (arg[i] >= 'a' && arg[i] <= 'z')
-            std::cout << (const char)(arg[i] - 32);
+            std::cout << (char)(arg[i] - 32);
         else
             std::cout << arg[i];
         i++;

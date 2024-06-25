@@ -53,7 +53,7 @@ void PhoneBook::add_to_book()
     contacts_count++;
 }
 
-void PhoneBook::diplay_column(std::string str, size_t width, bool print_pipe = true)
+void PhoneBook::diplay_column(std::string str, size_t width, bool print_pipe/* = true*/)
 {
     if (str.length() > width)
     {

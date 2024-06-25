@@ -7,7 +7,7 @@ int main()
     PhoneBook pb;
     std::string input;
 
-    std::cout << "Welcome to Yellow Book - Small Contacts Application.\n";
+    std::cout << "\n\tWelcome to Yellow Book - Small Contacts Application.\n\n";
     for(;;)
     {
         std::cout << "\tChoose between [ADD/SEARCH/EXIT]\n";
