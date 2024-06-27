@@ -1,8 +1,6 @@
 #pragma once
 #include <iostream>
 #include <string>
-#include <string.h>
-#include <unistd.h>
 
 class Contact
 {
