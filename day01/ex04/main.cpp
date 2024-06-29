@@ -8,8 +8,14 @@ int main(int c, const char **v)
         std::cerr << v[0] << " [file_path] [to_find_str] [replace_str]\n";
         return 1;
     }
-
     std::string fname = v[1];
+    std::string find = v[2];
+    std::string replace = v[3];
+    if (find.length() == 0)
+    {
+        std::cerr << "Can't replace empty string.\n";
+        return 1;
+    }
     char *content;
     {
         std::ifstream input(fname.c_str());
@@ -28,12 +34,11 @@ int main(int c, const char **v)
         if (output.is_open() == false)
         {
             std::cerr << "Can't open file: " << fname << '\n';
-            delete [] content;
+            delete[] content;
             return 1;
         }
-        std::string find = v[2];
-        std::string replace = v[3];
         file_replace(content, output, find, replace);
+        delete[] content;
     }
     return 0;
 }
