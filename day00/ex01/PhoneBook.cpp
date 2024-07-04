@@ -1,5 +1,4 @@
 #include "PhoneBook.hpp"
-#include <iomanip>
 
 PhoneBook::PhoneBook()
 {
@@ -53,7 +52,7 @@ void PhoneBook::add_to_book()
     contacts_count++;
 }
 
-void PhoneBook::diplay_column(std::string str, size_t width, bool print_pipe/* = true*/)
+void PhoneBook::diplay_column(std::string str, size_t width, bool print_pipe /* = true*/)
 {
     if (str.length() > width)
     {
@@ -89,10 +88,16 @@ void PhoneBook::search()
     int chosen_index;
     std::cout << "\tEnter contact index [0-" << contacts_count - 1 << "]: ";
     std::cin >> chosen_index;
-    std::cin.ignore();
+    if (std::cin.fail())
+    {
+        std::cout << "invalid input." << std::endl;
+        std::cin.clear();
+        return;
+    }
+    std::cin.ignore(1, '\n');
     if (chosen_index < 0 || chosen_index >= contacts_count)
     {
-        std::cout << "Index out of bound." << std::endl;    
+        std::cout << "Index out of bound." << std::endl;
         return;
     }
     std::cout << "first Name: " << contacts[chosen_index].get_f_name() << std::endl;

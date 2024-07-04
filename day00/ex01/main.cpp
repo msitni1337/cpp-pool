@@ -8,7 +8,7 @@ int main()
     std::string input;
 
     std::cout << "\n\tWelcome to Yellow Book - Small Contacts Application.\n\n";
-    for(;;)
+    while(!std::cin.eof())
     {
         std::cout << "\tChoose between [ADD/SEARCH/EXIT]\n";
         std::cout << "\t-> ";
@@ -19,6 +19,8 @@ int main()
            pb.search();
         else if (input == "EXIT")
             break;
+        else
+            std::cout << "invalid choice: " << input << '\n';
     }
     return 0;
 }
