@@ -54,43 +54,43 @@ std::ostream &operator<<(std::ostream &out, const Fixed &rhs)
     out << rhs.toFloat();
     return out;
 }
-bool Fixed::operator>(const Fixed &rhs)
+bool Fixed::operator>(const Fixed &rhs) const
 {
     return this != &rhs && this->toFloat() > rhs.toFloat();
 }
-bool Fixed::operator<(const Fixed &rhs)
+bool Fixed::operator<(const Fixed &rhs) const
 {
     return this != &rhs && this->toFloat() < rhs.toFloat();
 }
-bool Fixed::operator>=(const Fixed &rhs)
+bool Fixed::operator>=(const Fixed &rhs) const
 {
     return this == &rhs || this->toFloat() >= rhs.toFloat();
 }
-bool Fixed::operator<=(const Fixed &rhs)
+bool Fixed::operator<=(const Fixed &rhs) const
 {
     return this == &rhs || this->toFloat() <= rhs.toFloat();
 }
-bool Fixed::operator==(const Fixed &rhs)
+bool Fixed::operator==(const Fixed &rhs) const
 {
     return this == &rhs || this->toFloat() == rhs.toFloat();
 }
-bool Fixed::operator!=(const Fixed &rhs)
+bool Fixed::operator!=(const Fixed &rhs) const
 {
     return this != &rhs && this->toFloat() != rhs.toFloat();
 }
-Fixed Fixed::operator+(const Fixed &rhs)
+Fixed Fixed::operator+(const Fixed &rhs) const
 {
     Fixed res;
     res.setRawBits((this->rawBits + rhs.rawBits));
     return res;
 }
-Fixed Fixed::operator-(const Fixed &rhs)
+Fixed Fixed::operator-(const Fixed &rhs) const
 {
     Fixed res;
     res.setRawBits((this->rawBits - rhs.rawBits));
     return res;
 }
-Fixed Fixed::operator*(const Fixed &rhs)
+Fixed Fixed::operator*(const Fixed &rhs) const
 {
     Fixed res;
     __int64_t a, b;
@@ -99,7 +99,7 @@ Fixed Fixed::operator*(const Fixed &rhs)
     res.setRawBits((a * b) >> fraction);
     return res;
 }
-Fixed Fixed::operator/(const Fixed &rhs)
+Fixed Fixed::operator/(const Fixed &rhs) const
 {
     Fixed res;
     __int64_t a, b;
