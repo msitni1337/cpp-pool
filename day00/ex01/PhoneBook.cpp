@@ -8,7 +8,7 @@ PhoneBook::PhoneBook()
 
 PhoneBook::PhoneBook(const PhoneBook &pbook)
 {
-    for (size_t i = 0; i < 8; i++)
+    for (size_t i = 0; i < contact_max; i++)
         contacts[i] = pbook.contacts[i];
     contacts_count = pbook.contacts_count;
     insert_index = pbook.insert_index;
@@ -18,7 +18,7 @@ PhoneBook &PhoneBook::operator=(const PhoneBook &pbook)
 {
     if (this != &pbook)
     {
-        for (size_t i = 0; i < 8; i++)
+        for (size_t i = 0; i < contact_max; i++)
             contacts[i] = pbook.contacts[i];
         contacts_count = pbook.contacts_count;
         insert_index = pbook.insert_index;
@@ -48,8 +48,9 @@ void PhoneBook::add_to_book()
     if ((input = get_value("Please input contact's darkest secret:")).length() == 0)
         return;
     contacts[insert_index].set_secret(input);
-    insert_index = (insert_index + 1) % 8;
-    contacts_count++;
+    insert_index = (insert_index + 1) % contact_max;
+    if (contacts_count < contact_max)
+        contacts_count++;
 }
 
 void PhoneBook::diplay_column(std::string str, size_t width, bool print_pipe /* = true*/)

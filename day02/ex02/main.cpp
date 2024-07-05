@@ -1,19 +1,49 @@
 #include "Fixed.hpp"
+#include <iomanip>
 
 int main(void)
 {
-    Fixed a;
-    Fixed const b(10);
-    Fixed const c(42.42f);
-    Fixed const d(b);
-    a = Fixed(1234.4321f);
-    std::cout << "a is " << a << std::endl;
-    std::cout << "b is " << b << std::endl;
-    std::cout << "c is " << c << std::endl;
-    std::cout << "d is " << d << std::endl;
-    std::cout << "a is " << a.toInt() << " as integer" << std::endl;
-    std::cout << "b is " << b.toInt() << " as integer" << std::endl;
-    std::cout << "c is " << c.toInt() << " as integer" << std::endl;
-    std::cout << "d is " << d.toInt() << " as integer" << std::endl;
+    {
+        Fixed a;
+        Fixed const b(Fixed(16.0f) * Fixed(2));
+        std::cout << std::left;
+        std::cout << std::setw(15) << "a = " << a << std::endl;
+        std::cout << std::setw(15) << "b = " << b << std::endl;
+        std::cout << std::setw(15) << "++a = " << ++a << std::endl;
+        std::cout << std::setw(15) << "a = " << a << std::endl;
+        std::cout << std::setw(15) << "a++ = " << a++ << std::endl;
+        std::cout << std::setw(15) << "a = " << a << std::endl;
+        std::cout << std::setw(15) << "b = " << b << std::endl;
+        std::cout << std::setw(15) << "max(a, b) = " << Fixed::max(a, b) << std::endl;
+        std::cout << std::setw(15) << "min(a, b) = " << Fixed::min(a, b) << std::endl;
+        a = b;
+        std::cout << std::setw(15) << "a = b;" << std::endl;
+        std::cout << std::setw(15) << "a = " << a << std::endl;
+        std::cout << std::setw(15) << "b = " << b << std::endl;
+    }
+    std::cout << "======================================" << std::endl;
+    {
+        Fixed c(5.0f);
+        Fixed d(2.0f);
+        std::cout << std::setw(15) << "c = " << c << std::endl;
+        std::cout << std::setw(15) << "d = " << d << std::endl;
+        std::cout << std::setw(15) << "c + d = " << c + d << std::endl;
+        std::cout << std::setw(15) << "c - d = " << c - d << std::endl;
+        std::cout << std::setw(15) << "c * d = " << c * d << std::endl;
+        std::cout << std::setw(15) << "c / d = " << c / d << std::endl;
+        std::cout << std::setw(15) << "c > d = " << (c > d) << std::endl;
+        std::cout << std::setw(15) << "c >= d = " << (c >= d) << std::endl;
+        std::cout << std::setw(15) << "c < d = " << (c < d) << std::endl;
+        std::cout << std::setw(15) << "c <= d = " << (c <= d) << std::endl;
+        std::cout << std::setw(15) << "c == d = " << (c == d) << std::endl;
+        std::cout << std::setw(15) << "c != d = " << (c != d) << std::endl;
+        c = d;
+        std::cout << std::setw(15) << "c = d; " << std::endl;
+        std::cout << std::setw(15) << "c == d = " << (c == d) << std::endl;
+        std::cout << std::setw(15) << "c != d = " << (c != d) << std::endl;
+        std::cout << std::setw(15) << "d == d = " << (d == d) << std::endl;
+        std::cout << std::setw(15) << "d != d = " << (d != d) << std::endl;
+    }
+
     return 0;
 }

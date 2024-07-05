@@ -16,7 +16,8 @@ public:
     int get_insert_index();
 
 private:
-    Contact contacts[8];
+    static const int contact_max = 1;
+    Contact contacts[contact_max];
     int contacts_count;
     int insert_index;
     std::string get_value(const char *prompt);
