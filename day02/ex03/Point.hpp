@@ -15,5 +15,6 @@ public:
     const Fixed& get_x() const;
     const Fixed& get_y() const;
     bool operator==(const Point& rhs) const;
-    friend std::ostream &operator<<(std::ostream &out, const Point &rhs);
 };
+
+std::ostream &operator<<(std::ostream &out, const Point &rhs);

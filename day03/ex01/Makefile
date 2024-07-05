@@ -1,7 +1,7 @@
-SRC=bsp.cpp Fixed.cpp main.cpp Point.cpp
+SRC= ClapTrap.cpp main.cpp ScavTrap.cpp
 OBJ=${SRC:.cpp=.o}
 
-NAME=bsp
+NAME=ScavTrap
 CFLAGS=-Wall -Werror -Wextra -std=c++98
 CXX=c++
 

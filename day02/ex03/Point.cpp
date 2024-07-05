@@ -29,8 +29,9 @@ bool Point::operator==(const Point &rhs) const
 {
     return x == rhs.x && y == rhs.y;
 }
+
 std::ostream &operator<<(std::ostream &out, const Point &rhs)
 {
-    out << '(' << rhs.x << ',' << rhs.y << ')';
+    out << '(' << rhs.get_x() << ", " << rhs.get_y() << ')';
     return out;
 }

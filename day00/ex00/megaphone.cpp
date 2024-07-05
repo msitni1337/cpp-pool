@@ -6,13 +6,7 @@ void put_cap(const char*arg)
 
     i = 0;
     while (arg && arg[i])
-    {
-        if (arg[i] >= 'a' && arg[i] <= 'z')
-            std::cout << (char)(arg[i] - 32);
-        else
-            std::cout << arg[i];
-        i++;
-    }
+        std::cout << (char) std::toupper(arg[i]), i++;
 }
 
 int main(int c, const char**v)

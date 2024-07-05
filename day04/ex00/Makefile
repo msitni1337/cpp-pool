@@ -1,7 +1,7 @@
-SRC=bsp.cpp Fixed.cpp main.cpp Point.cpp
+SRC=Animal.cpp Cat.cpp Dog.cpp main.cpp
 OBJ=${SRC:.cpp=.o}
 
-NAME=bsp
+NAME=Animal
 CFLAGS=-Wall -Werror -Wextra -std=c++98
 CXX=c++
 
