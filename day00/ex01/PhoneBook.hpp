@@ -16,7 +16,7 @@ public:
     int get_insert_index();
 
 private:
-    static const int contact_max = 1;
+    static const int contact_max = 8;
     Contact contacts[contact_max];
     int contacts_count;
     int insert_index;

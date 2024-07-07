@@ -31,23 +31,25 @@ PhoneBook::~PhoneBook() {}
 
 void PhoneBook::add_to_book()
 {
+    Contact tmp;
     std::string input;
 
     if ((input = get_value("Please input contact's first name:")).length() == 0)
         return;
-    contacts[insert_index].set_f_name(input);
+    tmp.set_f_name(input);
     if ((input = get_value("Please input contact's last name:")).length() == 0)
         return;
-    contacts[insert_index].set_l_name(input);
+    tmp.set_l_name(input);
     if ((input = get_value("Please input contact's nickname:")).length() == 0)
         return;
-    contacts[insert_index].set_n_name(input);
+    tmp.set_n_name(input);
     if ((input = get_value("Please input contact's phone number:")).length() == 0)
         return;
-    contacts[insert_index].set_phone(input);
+    tmp.set_phone(input);
     if ((input = get_value("Please input contact's darkest secret:")).length() == 0)
         return;
-    contacts[insert_index].set_secret(input);
+    tmp.set_secret(input);
+    contacts[insert_index] = tmp;
     insert_index = (insert_index + 1) % contact_max;
     if (contacts_count < contact_max)
         contacts_count++;

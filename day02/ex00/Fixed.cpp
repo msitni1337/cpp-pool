@@ -8,14 +8,14 @@ Fixed::Fixed()
 Fixed::Fixed(const Fixed &fixed)
 {
     std::cout << "Copy constructor called\n";
-    rawBits = fixed.getRawBits();
+    rawBits = fixed.rawBits;
 }
 Fixed &Fixed::operator=(const Fixed &rhs)
 {
     if (this == &rhs)
         return *this;
     std::cout << "Copy assignement operator called\n";
-    rawBits = rhs.getRawBits();
+    rawBits = rhs.rawBits;
     return *this;
 }
 Fixed::~Fixed()
