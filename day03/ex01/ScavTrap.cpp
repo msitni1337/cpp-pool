@@ -41,5 +41,16 @@ void ScavTrap::attack(const std::string &target)
 }
 void ScavTrap::guardGate()
 {
-    std::cout << "Scav Trap " << getName() << "  is now in Gate keeper mode.\n";
+    unsigned int EnergyPoints = getEnergyPoints();
+    unsigned int HitPoints = getHitPoints();
+    if (EnergyPoints != 0 && HitPoints != 0)
+    {
+        EnergyPoints--;
+        setEnergyPoints(EnergyPoints);
+        std::cout << "ScavTrap " << getName() << " is now in gate keeper mode!\n";
+    }
+    else
+    {
+        std::cout << "ScavTrap " << getName() << " has no more Energy Points or Hit Points to guard gate.\n";
+    }
 }
