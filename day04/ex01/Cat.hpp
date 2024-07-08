@@ -9,5 +9,6 @@ private:
 public:
     Cat();
     ~Cat();
+    Cat& operator=(const Cat& cat);
     void makeSound() const;
 };

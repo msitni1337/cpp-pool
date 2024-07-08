@@ -4,9 +4,6 @@ Cat::Cat()
 {
     type = "Cat";
     brain = new Brain();
-    
-    // populate with ideas...
-
     std::cout << "Constructor for " << type << " class called\n";
 }
 Cat::~Cat()
