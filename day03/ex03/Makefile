@@ -1,7 +1,7 @@
-SRC= ClapTrap.cpp DiamondTrap.cpp FragTrap.cpp main.cpp ScavTrap.cpp 
+SRC=ClapTrap.cpp DiamondTrap.cpp FragTrap.cpp main.cpp ScavTrap.cpp
 OBJ=${SRC:.cpp=.o}
 
-NAME=FragTrap
+NAME=DiamondTrap
 CFLAGS=-Wall -Werror -Wextra -std=c++98
 CXX=c++
 
