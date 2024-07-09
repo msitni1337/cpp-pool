@@ -22,9 +22,9 @@ Fixed::Fixed(float const value)
 }
 Fixed &Fixed::operator=(const Fixed &rhs)
 {
+    // std::cout << "Copy assignement operator called\n";
     if (this == &rhs)
         return *this;
-    // std::cout << "Copy assignement operator called\n";
     rawBits = rhs.getRawBits();
     return *this;
 }
