@@ -1,19 +1,19 @@
-#include "Animal.hpp"
+#include "AAnimal.hpp"
 
-Animal::Animal()
+AAnimal::AAnimal()
 {
     type = "Animal";
     std::cout << "Constructor for " << type << " class called\n";
 }
-Animal::~Animal()
+AAnimal::~AAnimal()
 {
     std::cout << "Destructor for Animal type " << type << " class called\n";
 }
-std::string Animal::getType() const
+std::string AAnimal::getType() const
 {
     return type;
 }
-void Animal::makeSound() const
+void AAnimal::makeSound() const
 {
     std::cout << "Different animals have different voices.\n";
 }
