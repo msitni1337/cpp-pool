@@ -40,6 +40,6 @@ void DiamondTrap::attack(const std::string &target)
 }
 void DiamondTrap::whoAmI()
 {
-    std::cout << Name << " Hello From Diamond Trap.\n";
-    std::cout << getName() << " Hello From Clap Trap.\n";
+    std::cout << "Hello, I'm " << Name << std::endl;
+    std::cout << "And also, I'm " << getName() << std::endl;
 }

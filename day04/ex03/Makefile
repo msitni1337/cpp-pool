@@ -2,7 +2,7 @@ SRC=main.cpp AMateria.cpp ICharacter.cpp
 OBJ=${SRC:.cpp=.o}
 
 NAME=Animal
-CFLAGS=-Wall -Werror -Wextra -std=c++98
+CFLAGS=-Wall -Werror -Wextra -std=c++98 -I.
 CXX=c++
 
 .SECONDARY: ${OBJ}
