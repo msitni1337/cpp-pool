@@ -5,9 +5,11 @@
 
 int main()
 {
+	Ice ice;
+	Cure cure;
 	IMateriaSource *src = new MateriaSource();
-	src->learnMateria(new Ice());
-	src->learnMateria(new Cure());
+	src->learnMateria(&ice);
+	src->learnMateria(&cure);
 	ICharacter *me = new Character("me");
 	AMateria *tmp;
 	tmp = src->createMateria("ice");

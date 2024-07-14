@@ -5,12 +5,11 @@ Ice::Ice() : AMateria("ice")
 }
 Ice::Ice(const Ice &ice) : AMateria("ice")
 {
+	(void) ice;
 }
 Ice &Ice::operator=(const Ice &ice)
 {
-	if (this == &ice)
-		return *this;
-	// Handle copyig logic
+	(void) ice;
 	return *this;
 }
 Ice::~Ice()
@@ -19,7 +18,6 @@ Ice::~Ice()
 AMateria *Ice::clone() const
 {
 	Ice* ice = new Ice();
-	// cloning logic
 	return ice;
 }
 void Ice::use(ICharacter &target)

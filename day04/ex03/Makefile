@@ -1,7 +1,7 @@
-SRC=main.cpp AMateria.cpp Character.cpp Cure.cpp Ice.cpp ICharacter.cpp IMateriaSource.cpp main.cpp 
+SRC= AMateria.cpp Character.cpp Cure.cpp Ice.cpp ICharacter.cpp IMateriaSource.cpp main.cpp MateriaSource.cpp 
 OBJ=${SRC:.cpp=.o}
 
-NAME=Animal
+NAME=Game
 CFLAGS=-Wall -Werror -Wextra -std=c++98 -I.
 CXX=c++
 

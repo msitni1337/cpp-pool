@@ -5,8 +5,10 @@ Character::Character(const std::string name) : Name(name)
 	for (size_t i = 0; i < sizeof(Inventory) / sizeof(Inventory[0]); i++)
 		Inventory[i] = NULL;
 }
-Character::Character(const Character &character)
+Character::Character(const Character &character) : ICharacter(character)
 {
+	for (size_t i = 0; i < sizeof(Inventory) / sizeof(Inventory[0]); i++)
+		Inventory[i] = NULL;
 	*this = character;
 }
 Character &Character::operator=(const Character &character)
@@ -28,6 +30,11 @@ Character::~Character()
 	for (size_t i = 0; i < sizeof(Inventory) / sizeof(Inventory[0]); i++)
 		delete Inventory[i];
 }
+ICharacter *Character::clone() const
+{
+	Character *c = new Character(*this);
+	return c;
+}
 std::string const &Character::getName() const
 {
 	return Name;
@@ -45,11 +52,11 @@ void Character::equip(AMateria *m)
 }
 void Character::unequip(int idx)
 {
-	if (idx >= 0 && (unsigned int) idx < InventorySize)
+	if (idx >= 0 && (unsigned int)idx < InventorySize)
 		Inventory[idx] = NULL;
 }
 void Character::use(int idx, ICharacter &target)
 {
-	if (idx >= 0 && (unsigned int) idx < InventorySize && Inventory[idx])
+	if (idx >= 0 && (unsigned int)idx < InventorySize && Inventory[idx])
 		Inventory[idx]->use(target);
 }
