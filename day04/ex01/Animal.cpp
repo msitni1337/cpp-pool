@@ -3,7 +3,18 @@
 Animal::Animal()
 {
     type = "Animal";
-    std::cout << "Constructor for " << type << " class called\n";
+    std::cout << "Constructor for Animal type " << type << " class called\n";
+}
+Animal::Animal(const Animal &animal)
+{
+    type = animal.type;
+    std::cout << "Copy Constructor for Animal type " << type << " class called\n";
+}
+Animal &Animal::operator=(const Animal &animal)
+{
+    (void)animal;
+    std::cout << "Copy Assignemnt for Animal type " << type << " class called\n";
+    return *this;
 }
 Animal::~Animal()
 {

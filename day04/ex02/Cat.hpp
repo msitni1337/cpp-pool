@@ -8,7 +8,8 @@ private:
     Brain* brain;    
 public:
     Cat();
-    ~Cat();
+    Cat(const Cat& cat);
     Cat& operator=(const Cat& cat);
+    ~Cat();
     void makeSound() const;
 };
