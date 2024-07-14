@@ -46,17 +46,22 @@ void Character::equip(AMateria *m)
 		if (Inventory[i] == NULL)
 		{
 			Inventory[i] = m;
-			break;
+			return;
 		}
 	}
+	std::cerr << "No more free slots in Inventory to equip a new materia\n";
 }
 void Character::unequip(int idx)
 {
-	if (idx >= 0 && (unsigned int)idx < InventorySize)
+	if (idx >= 0 && (unsigned int)idx < InventorySize && Inventory[idx])
 		Inventory[idx] = NULL;
+	else
+		std::cerr << "Can't unequip materia at index: " << idx << '\n';
 }
 void Character::use(int idx, ICharacter &target)
 {
 	if (idx >= 0 && (unsigned int)idx < InventorySize && Inventory[idx])
 		Inventory[idx]->use(target);
+	else
+		std::cerr << "Can't use materia at index: " << idx << '\n';
 }

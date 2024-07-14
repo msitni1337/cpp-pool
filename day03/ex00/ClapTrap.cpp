@@ -59,9 +59,9 @@ void ClapTrap::beRepaired(unsigned int amount)
     if (EnergyPoints != 0 && HitPoints != 0)
     {
         EnergyPoints--;
-        long tmp = HitPoints + amount;
-        if (tmp > __INT_MAX__)
-            HitPoints = __INT_MAX__;
+        unsigned long tmp = (unsigned long)HitPoints + amount;
+        if (tmp > __UINT32_MAX__)
+            HitPoints = __UINT32_MAX__;
         else
             HitPoints = tmp;
         std::cout << "ClapTrap " << Name << " gained " << amount << " Hit Points back, Hit Points = " << HitPoints << "\n";

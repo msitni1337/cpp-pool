@@ -37,9 +37,10 @@ void MateriaSource::learnMateria(AMateria *materia)
 		if (Inventory[i] == NULL)
 		{
 			Inventory[i] = materia->clone();
-			break;
+			return;
 		}
 	}
+	std::cerr << "No more free slots in Inventory to learn a new materia\n";
 }
 AMateria *MateriaSource::createMateria(std::string const &type)
 {
@@ -48,5 +49,6 @@ AMateria *MateriaSource::createMateria(std::string const &type)
 		if (Inventory[i] && Inventory[i]->getType() == type)
 			return Inventory[i]->clone();
 	}
+	std::cerr << "Materia of type" << type << " is unknown.\n";
 	return NULL;
 }
