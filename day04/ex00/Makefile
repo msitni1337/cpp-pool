@@ -1,4 +1,4 @@
-SRC=Animal.cpp Cat.cpp Dog.cpp main.cpp
+SRC=Animal.cpp Cat.cpp Dog.cpp main.cpp WrongAnimal.cpp WrongCat.cpp
 OBJ=${SRC:.cpp=.o}
 
 NAME=Animal
