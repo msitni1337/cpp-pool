@@ -30,7 +30,7 @@ int main()
         const WrongAnimal *animals[2] = {new WrongAnimal(), new WrongCat()};
         for (size_t i = 0; i < 2; i++)
             std::cout << animals[i]->getType() << ": ", animals[i]->makeSound();
-        for (size_t i = 0; i < 2ete animals[i];; i++)
+        for (size_t i = 0; i < 2; i++)
                 delete animals[i];
     }
     return 0;
