@@ -1,1 +1,1 @@
-# This is an introductory exercices to cpp and OOP paradigms.
+# These are introductory exercices to cpp and OOP paradigms.
