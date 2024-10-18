@@ -1,6 +1,6 @@
 #include "Bureaucrat.hpp"
 
-Bureaucrat::GradeTooHighException::GradeTooHighException()
+Bureaucrat::GradeTooHighException::GradeTooHighException() _NOEXCEPT
 {
 
 }
@@ -8,8 +8,11 @@ Bureaucrat::GradeTooHighException::~GradeTooHighException() _NOEXCEPT
 {
 
 }
-
-Bureaucrat::GradeTooLowException::GradeTooLowException()
+const char* Bureaucrat::GradeTooHighException::what() const _NOEXCEPT
+{
+     return "GradeTooHighException";
+}
+Bureaucrat::GradeTooLowException::GradeTooLowException() _NOEXCEPT
 {
 
 }
@@ -17,8 +20,11 @@ Bureaucrat::GradeTooLowException::~GradeTooLowException() _NOEXCEPT
 {
     
 }
-
-Bureaucrat::EmptyNameException::EmptyNameException()
+const char* Bureaucrat::GradeTooLowException::what() const _NOEXCEPT
+{
+     return "GradeTooLowException";
+}
+Bureaucrat::EmptyNameException::EmptyNameException() _NOEXCEPT
 {
 
 }
@@ -26,15 +32,18 @@ Bureaucrat::EmptyNameException::~EmptyNameException() _NOEXCEPT
 {
     
 }
-
+const char* Bureaucrat::EmptyNameException::what() const _NOEXCEPT
+{
+     return "EmptyNameException";
+}
 Bureaucrat::Bureaucrat(std::string name, unsigned int grade) : _name(name)
 {
     if (name.empty())
-        throw new EmptyNameException(); // exception class need to be implemented ..
+        throw new Bureaucrat::EmptyNameException(); // exception class need to be implemented ..
     if (grade < 1)
-        throw new GradeTooHighException(); // exception class need to be implemented ..
+        throw new Bureaucrat::GradeTooHighException(); // exception class need to be implemented ..
     if (grade > 150)
-        throw new GradeTooLowException(); // exception class need to be implemented ..
+        throw new Bureaucrat::GradeTooLowException(); // exception class need to be implemented ..
     _grade = grade;
 }
 Bureaucrat::Bureaucrat(const Bureaucrat &b)
@@ -43,6 +52,7 @@ Bureaucrat::Bureaucrat(const Bureaucrat &b)
 }
 Bureaucrat &Bureaucrat::operator=(const Bureaucrat &b)
 {
+    
     if (&b != this)
         _grade = b._grade;
     return *this;
@@ -61,13 +71,13 @@ unsigned int Bureaucrat::get_grade() const
 void Bureaucrat::increment_grade()
 {
     if (_grade == 1)
-        throw new GradeTooHighException();
+        throw new Bureaucrat::GradeTooHighException();
     _grade--;
 }
 void Bureaucrat::decrement_grade()
 {
     if (_grade == 150)
-        throw new GradeTooLowException();
+        throw new Bureaucrat::GradeTooLowException();
     _grade++;
 }
 

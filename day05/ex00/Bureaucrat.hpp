@@ -1,30 +1,35 @@
 #pragma once
 #include <string>
+#include <iostream>
+#include <fstream>
 
 class Bureaucrat
 {
 public:
-    class GradeTooHighException : std::exception
+    class GradeTooHighException : public std::exception
     {
     private:
     public:
-        GradeTooHighException();
-        virtual ~GradeTooHighException() _NOEXCEPT;
+        GradeTooHighException() _NOEXCEPT;
+        ~GradeTooHighException() _NOEXCEPT;
+        const char* what() const _NOEXCEPT;
     };
 
-    class GradeTooLowException : std::exception
+    class GradeTooLowException : public std::exception
     {
     private:
     public:
-        GradeTooLowException();
-        virtual ~GradeTooLowException() _NOEXCEPT;
+        GradeTooLowException() _NOEXCEPT;
+        ~GradeTooLowException() _NOEXCEPT;
+        const char* what() const _NOEXCEPT;
     };
-    class EmptyNameException : std::exception
+    class EmptyNameException : public std::exception
     {
     private:
     public:
-        EmptyNameException();
-        virtual ~EmptyNameException() _NOEXCEPT;
+        EmptyNameException() _NOEXCEPT;
+        ~EmptyNameException() _NOEXCEPT;
+        const char* what() const _NOEXCEPT;
     };
 
 private:

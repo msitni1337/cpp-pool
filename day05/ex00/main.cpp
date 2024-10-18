@@ -7,8 +7,14 @@ int main(int c, char**v)
     {
         unsigned int grade;
         std::cout << "Enter desired grade: ";
-        std::cin >> grade;        
-        Bureaucrat a(v[1], grade);
+        std::cin >> grade;
+        try{
+            Bureaucrat a(v[1], grade);
+        }
+        catch (std::exception& e)
+        {
+            printf("what: %s\n", e.what());
+        }
     }
     else
         std::cout << "Usage\n" << v[0] << " [Name of The Bureaucrat]\n";
