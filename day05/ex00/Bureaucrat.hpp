@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 
+
 class Bureaucrat
 {
 public:
@@ -10,27 +11,26 @@ public:
     {
     private:
     public:
-        GradeTooHighException() _NOEXCEPT;
-        ~GradeTooHighException() _NOEXCEPT;
-        const char* what() const _NOEXCEPT;
+        GradeTooHighException();
+        const char* what() const throw();
     };
 
     class GradeTooLowException : public std::exception
     {
     private:
     public:
-        GradeTooLowException() _NOEXCEPT;
-        ~GradeTooLowException() _NOEXCEPT;
-        const char* what() const _NOEXCEPT;
+        GradeTooLowException();
+        const char* what() const throw();
     };
+    
     class EmptyNameException : public std::exception
     {
     private:
     public:
-        EmptyNameException() _NOEXCEPT;
-        ~EmptyNameException() _NOEXCEPT;
-        const char* what() const _NOEXCEPT;
+        EmptyNameException();
+        const char* what() const throw();
     };
+
 
 private:
     const std::string _name;

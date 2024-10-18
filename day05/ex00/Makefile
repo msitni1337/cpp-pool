@@ -2,7 +2,7 @@ SRC= Bureaucrat.cpp main.cpp
 OBJ=${SRC:.cpp=.o}
 
 NAME=Bureaucrat
-CFLAGS=-Wall -Werror -Wextra -std=c++98 -fsanitize=address
+CFLAGS=-Wall -Werror -Wextra -std=c++98 #-fsanitize=address
 CXX=c++
 
 .SECONDARY: ${OBJ}

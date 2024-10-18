@@ -11,7 +11,7 @@ int main(int c, char**v)
         try{
             Bureaucrat a(v[1], grade);
         }
-        catch (std::exception& e)
+        catch (const std::exception &e)
         {
             printf("what: %s\n", e.what());
         }
