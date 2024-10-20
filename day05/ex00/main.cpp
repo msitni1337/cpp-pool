@@ -13,7 +13,7 @@ int main(int c, char**v)
         }
         catch (const std::exception &e)
         {
-            printf("what: %s\n", e.what());
+            std::cerr << "what: " << e.what() << "\n";
         }
     }
     else

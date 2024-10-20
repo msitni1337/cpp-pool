@@ -1,4 +1,4 @@
-SRC= Bureaucrat.cpp main.cpp
+SRC= Bureaucrat.cpp Form.cpp main.cpp 
 OBJ=${SRC:.cpp=.o}
 
 NAME=Bureaucrat

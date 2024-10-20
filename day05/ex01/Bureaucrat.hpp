@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 
+class Form;
 
 class Bureaucrat
 {
@@ -45,6 +46,7 @@ public:
     unsigned int get_grade() const;
     void increment_grade();
     void decrement_grade();
+    void signForm(Form& f);
 };
 
 std::ostream &operator<<(std::ostream &out, const Bureaucrat &rhs);
