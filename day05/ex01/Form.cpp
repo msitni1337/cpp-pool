@@ -28,7 +28,7 @@ const char *Form::EmptyNameException::what() const throw()
 }
 
 Form::Form(const std::string name, const unsigned int to_sign, const unsigned int to_exec)
-    : _name(name), gr_to_sign(to_sign), gr_to_exec(to_exec)
+    : _name(name), _is_signed(false), gr_to_sign(to_sign), gr_to_exec(to_exec)
 {
     if (name.empty())
         throw Form::EmptyNameException();
@@ -36,7 +36,6 @@ Form::Form(const std::string name, const unsigned int to_sign, const unsigned in
         throw Form::GradeTooHighException();
     if (to_sign > 150 || to_exec > 150)
         throw Form::GradeTooLowException();
-    _is_signed = false;
 }
 Form::Form(const Form &f)
     : _name(f._name), _is_signed(f._is_signed), gr_to_sign(f.gr_to_sign), gr_to_exec(f.gr_to_exec)

@@ -1,22 +1,13 @@
-#include "Form.hpp"
+#include "AForm.hpp"
 #include "Bureaucrat.hpp"
 
-Bureaucrat::GradeTooHighException::GradeTooHighException()
-{
-}
 const char *Bureaucrat::GradeTooHighException::what() const throw()
 {
     return "Bureaucrat::GradeTooHighException";
 }
-Bureaucrat::GradeTooLowException::GradeTooLowException()
-{
-}
 const char *Bureaucrat::GradeTooLowException::what() const throw()
 {
     return "Bureaucrat::GradeTooLowException";
-}
-Bureaucrat::EmptyNameException::EmptyNameException()
-{
 }
 const char *Bureaucrat::EmptyNameException::what() const throw()
 {
@@ -67,7 +58,7 @@ void Bureaucrat::decrement_grade()
     _grade++;
 }
 
-void Bureaucrat::signForm(Form &f)
+void Bureaucrat::signForm(AForm &f)
 {
     try
     {
@@ -76,7 +67,19 @@ void Bureaucrat::signForm(Form &f)
     }
     catch (const std::exception &e)
     {
-        std::cerr << _name << " couldn't sign " << f.get_name() << " because "<< e.what() <<".\n";
+        std::cerr << _name << " couldn't sign " << f.get_name() << " because "<< e.what() <<".";
+    }
+}
+void Bureaucrat::executeForm(AForm const & form)
+{
+    try
+    {
+        form.execute(*this);
+        std::cout << _name << " executed " << form.get_name() << "\n";
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr <<  _name << " did not executed " << form.get_name() << " for this reason : " << e.what() << '\n';
     }
 }
 
