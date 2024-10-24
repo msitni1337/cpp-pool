@@ -58,7 +58,7 @@ public:
     unsigned int get_gr_to_exec() const;
     void beSigned(const Bureaucrat& b);
     virtual void execute(Bureaucrat const & executor) const;
-    virtual AForm* clone() = 0;
+    virtual void setTarget(std::string newTarget) = 0;
 };
 
 std::ostream &operator<<(std::ostream &out, const AForm &rhs);

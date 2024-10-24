@@ -12,5 +12,5 @@ public:
     RobotomyRequestForm &operator=(const RobotomyRequestForm &ppf);
     ~RobotomyRequestForm();
     void execute(Bureaucrat const &executor) const;
-    AForm* clone();
+    void setTarget(std::string newTarget);
 };

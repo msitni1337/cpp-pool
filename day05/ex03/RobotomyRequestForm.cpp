@@ -6,11 +6,11 @@ RobotomyRequestForm::RobotomyRequestForm(std::string target) : AForm("RobotomyRe
     if(target.empty())
         throw AForm::EmptyTargetException();
 }
-RobotomyRequestForm::RobotomyRequestForm(const RobotomyRequestForm &ppf) : AForm(ppf)
+RobotomyRequestForm::RobotomyRequestForm(const RobotomyRequestForm &rrf) : AForm(rrf), _target(rrf._target)
 {}
-RobotomyRequestForm &RobotomyRequestForm::operator=(const RobotomyRequestForm &ppf)
+RobotomyRequestForm &RobotomyRequestForm::operator=(const RobotomyRequestForm &rrf)
 {
-    (AForm&)*this = ppf;
+    (AForm&)*this = rrf;
     return *this;
 }
 RobotomyRequestForm::~RobotomyRequestForm()
@@ -26,4 +26,10 @@ void RobotomyRequestForm::execute(Bureaucrat const &executor) const
         std::cout << _target << " has been robotomized successfully.\n";
     else
         std::cout << "the robotomy for " << _target << " has failed.\n";
+}
+void RobotomyRequestForm::setTarget(std::string newTarget)
+{
+    if(newTarget.empty())
+        throw AForm::EmptyTargetException();
+    _target = newTarget;
 }
