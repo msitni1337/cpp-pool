@@ -1,27 +1,19 @@
 #include "Form.hpp"
 #include "Bureaucrat.hpp"
 
-Bureaucrat::GradeTooHighException::GradeTooHighException()
-{
-}
 const char *Bureaucrat::GradeTooHighException::what() const throw()
 {
     return "Bureaucrat::GradeTooHighException";
-}
-Bureaucrat::GradeTooLowException::GradeTooLowException()
-{
 }
 const char *Bureaucrat::GradeTooLowException::what() const throw()
 {
     return "Bureaucrat::GradeTooLowException";
 }
-Bureaucrat::EmptyNameException::EmptyNameException()
-{
-}
 const char *Bureaucrat::EmptyNameException::what() const throw()
 {
     return "Bureaucrat::EmptyNameException";
 }
+
 Bureaucrat::Bureaucrat(std::string name, unsigned int grade) : _name(name)
 {
     if (name.empty())
@@ -38,14 +30,12 @@ Bureaucrat::Bureaucrat(const Bureaucrat &b)
 }
 Bureaucrat &Bureaucrat::operator=(const Bureaucrat &b)
 {
-
     if (&b != this)
         _grade = b._grade;
     return *this;
 }
 Bureaucrat::~Bureaucrat()
-{
-}
+{}
 std::string Bureaucrat::get_name() const
 {
     return _name;
@@ -66,7 +56,6 @@ void Bureaucrat::decrement_grade()
         throw GradeTooLowException();
     _grade++;
 }
-
 void Bureaucrat::signForm(Form &f)
 {
     try

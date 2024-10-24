@@ -6,11 +6,15 @@ RobotomyRequestForm::RobotomyRequestForm(std::string target) : AForm("RobotomyRe
     if(target.empty())
         throw AForm::EmptyTargetException();
 }
-RobotomyRequestForm::RobotomyRequestForm(const RobotomyRequestForm &ppf) : AForm(ppf)
+RobotomyRequestForm::RobotomyRequestForm(const RobotomyRequestForm &rrf) : AForm(rrf), _target(rrf._target)
 {}
-RobotomyRequestForm &RobotomyRequestForm::operator=(const RobotomyRequestForm &ppf)
+RobotomyRequestForm &RobotomyRequestForm::operator=(const RobotomyRequestForm &rrf)
 {
-    (AForm&)*this = ppf;
+    if (this != &rrf)
+    {
+        (AForm&)*this = rrf;
+        _target = rrf._target;
+    }
     return *this;
 }
 RobotomyRequestForm::~RobotomyRequestForm()

@@ -6,17 +6,19 @@ ShrubberyCreationForm::ShrubberyCreationForm(std::string target) : AForm("Shrubb
     if (target.empty())
         throw AForm::EmptyTargetException();
 }
-ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm &ppf) : AForm(ppf)
+ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm &shf) : AForm(shf), _target(shf._target)
+{}
+ShrubberyCreationForm &ShrubberyCreationForm::operator=(const ShrubberyCreationForm &shf)
 {
-}
-ShrubberyCreationForm &ShrubberyCreationForm::operator=(const ShrubberyCreationForm &ppf)
-{
-    (AForm &)*this = ppf;
+    if (this != &shf)
+    {
+        (AForm&)*this = shf;
+        _target = shf._target;
+    }
     return *this;
 }
 ShrubberyCreationForm::~ShrubberyCreationForm()
-{
-}
+{}
 void ShrubberyCreationForm::execute(Bureaucrat const &executor) const
 {
     AForm::execute(executor);

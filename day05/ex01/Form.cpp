@@ -1,27 +1,13 @@
 #include "Form.hpp"
 
-Form::GradeTooHighException::GradeTooHighException()
-{
-}
-
 const char *Form::GradeTooHighException::what() const throw()
 {
     return "Form::GradeTooHighException";
 }
-
-Form::GradeTooLowException::GradeTooLowException()
-{
-}
-
 const char *Form::GradeTooLowException::what() const throw()
 {
     return "Form::GradeTooLowException";
 }
-
-Form::EmptyNameException::EmptyNameException()
-{
-}
-
 const char *Form::EmptyNameException::what() const throw()
 {
     return "Form::EmptyNameException";

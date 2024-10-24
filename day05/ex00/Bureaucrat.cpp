@@ -1,29 +1,18 @@
 #include "Bureaucrat.hpp"
 
-Bureaucrat::GradeTooHighException::GradeTooHighException() 
-{
-
-}
 const char* Bureaucrat::GradeTooHighException::what() const throw()
 {
     return "GradeTooHighException";
-}
-Bureaucrat::GradeTooLowException::GradeTooLowException() 
-{
-
 }
 const char* Bureaucrat::GradeTooLowException::what() const throw()
 {
     return "GradeTooLowException";
 }
-Bureaucrat::EmptyNameException::EmptyNameException() 
-{
-
-}
 const char* Bureaucrat::EmptyNameException::what() const throw()
 {
     return "EmptyNameException";
 }
+
 Bureaucrat::Bureaucrat(std::string name, unsigned int grade) : _name(name)
 {
     if (name.empty())

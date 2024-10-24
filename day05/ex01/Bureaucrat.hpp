@@ -12,7 +12,6 @@ public:
     {
     private:
     public:
-        GradeTooHighException();
         const char* what() const throw();
     };
 
@@ -20,7 +19,6 @@ public:
     {
     private:
     public:
-        GradeTooLowException();
         const char* what() const throw();
     };
     
@@ -28,7 +26,6 @@ public:
     {
     private:
     public:
-        EmptyNameException();
         const char* what() const throw();
     };
 

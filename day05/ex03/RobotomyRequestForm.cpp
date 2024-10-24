@@ -10,7 +10,11 @@ RobotomyRequestForm::RobotomyRequestForm(const RobotomyRequestForm &rrf) : AForm
 {}
 RobotomyRequestForm &RobotomyRequestForm::operator=(const RobotomyRequestForm &rrf)
 {
-    (AForm&)*this = rrf;
+    if (this != &rrf)
+    {
+        (AForm&)*this = rrf;
+        _target = rrf._target;
+    }
     return *this;
 }
 RobotomyRequestForm::~RobotomyRequestForm()

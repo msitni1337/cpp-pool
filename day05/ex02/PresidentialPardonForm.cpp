@@ -5,11 +5,15 @@ PresidentialPardonForm::PresidentialPardonForm(std::string target) : AForm("Pres
     if(target.empty())
         throw AForm::EmptyTargetException();
 }
-PresidentialPardonForm::PresidentialPardonForm(const PresidentialPardonForm &ppf) : AForm(ppf)
+PresidentialPardonForm::PresidentialPardonForm(const PresidentialPardonForm &ppf) : AForm(ppf), _target(ppf._target)
 {}
 PresidentialPardonForm &PresidentialPardonForm::operator=(const PresidentialPardonForm &ppf)
 {
-    (AForm&)*this = ppf;
+    if (this != &ppf)
+    {
+        (AForm&)*this = ppf;
+        _target = ppf._target;
+    }
     return *this;
 }
 PresidentialPardonForm::~PresidentialPardonForm()

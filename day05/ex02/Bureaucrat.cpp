@@ -29,14 +29,12 @@ Bureaucrat::Bureaucrat(const Bureaucrat &b)
 }
 Bureaucrat &Bureaucrat::operator=(const Bureaucrat &b)
 {
-
     if (&b != this)
         _grade = b._grade;
     return *this;
 }
 Bureaucrat::~Bureaucrat()
-{
-}
+{}
 std::string Bureaucrat::get_name() const
 {
     return _name;
@@ -57,7 +55,6 @@ void Bureaucrat::decrement_grade()
         throw GradeTooLowException();
     _grade++;
 }
-
 void Bureaucrat::signForm(AForm &f)
 {
     try
