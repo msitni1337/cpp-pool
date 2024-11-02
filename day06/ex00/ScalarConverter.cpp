@@ -146,9 +146,9 @@ static void parse_string(std::string s)
 	}
 	if (i != s.length())
 	{
-		if (s == "inf" || s == "-inf" || s == "nan")
+		if (s == "inf" || s == "+inf" || s == "-inf" || s == "nan")
 			ConvertDouble(s);
-		else if (s == "inff" || s == "-inff" || s == "nanf")
+		else if (s == "inff" || s == "+inff" || s == "-inff" || s == "nanf")
 			ConvertFloat(s);
 		else if (s[i] == 'f' && i == s.length() - 1 && i > 0 && std::isdigit(s[i - 1]))
 			ConvertFloat(s);
