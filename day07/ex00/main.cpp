@@ -22,6 +22,6 @@ int main(int c, char **v)
 
         return 0;
     }
-    std::cout << "Bad arguments.\nusage: " << v[0] << "[first string] [second string]\n";
+    std::cout << "Bad arguments.\nusage: " << v[0] << " [first string] [second string]\n";
     return 1;
 }
