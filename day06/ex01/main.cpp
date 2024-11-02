@@ -1,13 +1,16 @@
-#include "ScalarConverter.hpp"
+#include "Serializer.hpp"
+#include <iostream>
 
-int main(int c, char **v)
+int main()
 {
-    if (c == 2)
-    {
-        ScalarConverter::convert(v[1]);
-        return 0;
-    }
-    std::cout << "Bad arguments. usage:\n";
-    std::cout << v[0] << " [string to convert]\n";
-    return 1;
+    Data data;
+
+    data.age       = 10;
+    data.distance  = 100.0f;
+    data.grade     = 'A';
+    data.price     = 100.0;
+    uintptr_t raw  = Serializer::Serialize(&data);
+    Data    * des = Serializer::Deserialize(raw);
+    std::cout << "des->age = " << des->age << "\ndes->distance = " << des->distance
+        << "\ndes->grade = " << des->grade << "\ndes->price = " << des->price << '\n';
 }

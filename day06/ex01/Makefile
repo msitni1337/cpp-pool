@@ -1,7 +1,7 @@
-SRC= main.cpp ScalarConverter.cpp
+SRC= Serializer.cpp main.cpp
 OBJ=${SRC:.cpp=.o}
 
-NAME=Converter
+NAME=Serializer
 CFLAGS=-Wall -Werror -Wextra -std=c++98 #-fsanitize=address
 CXX=c++
 
