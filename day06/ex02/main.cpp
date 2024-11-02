@@ -1,17 +1,24 @@
 #include "A.hpp"
 #include "B.hpp"
 #include "C.hpp"
-#include <random>
 #include <iostream>
+#include <fstream>
 
 Base *generate(void)
 {
-    int c = rand() % 3;
+    Base *b;
+    std::ifstream randfile("/dev/rand");
+    unsigned int c;
+    randfile >> c;
+    c %= 3;
     if (c == 0)
-        return new A();
+        b = new A();
     else if (c == 1)
-        return new B();
-    return new C();
+        b = new B();
+    else
+        b = new C();
+    randfile.close();
+    return b;
 }
 
 void identify(Base *p)
@@ -54,8 +61,6 @@ void identify(Base &p)
 
 int main()
 {
-    srand(time(0));
-
     while (1)
     {
         Base* base = generate();
