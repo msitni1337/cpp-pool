@@ -7,8 +7,8 @@
 Base *generate(void)
 {
     Base *b;
-    std::ifstream randfile("/dev/rand");
-    unsigned int c;
+    std::ifstream randfile("/dev/random");
+    unsigned char c;
     randfile >> c;
     c %= 3;
     if (c == 0)
