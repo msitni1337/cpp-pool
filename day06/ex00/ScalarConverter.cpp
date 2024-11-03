@@ -15,16 +15,6 @@ ScalarConverter &ScalarConverter::operator=(const ScalarConverter &sc)
 ScalarConverter::~ScalarConverter()
 {
 }
-// static bool isNumeric(std::string s)
-// {
-// 	size_t i = 0;
-// 	for (; i < s.length() && s[i] >= '0' && s[i] <= '9'; i++)
-// 	{
-// 	}
-// 	if (i && i == s.length())
-// 		return true;
-// 	return false;
-// }
 static void ConvertChar(std::string s)
 {
 	std::cout << "ConvertChar\n";
