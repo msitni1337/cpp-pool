@@ -1,6 +1,6 @@
 #include "whatever.hpp"
 
-template<class T> void swap(T a, T b)
+template<class T> void swap(T &a, T &b)
 {
     T tmp = a;
 
