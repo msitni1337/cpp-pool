@@ -20,11 +20,7 @@ int main(int c, char **v)
         std::cin >> choice;
         if (choice < 0)
             break;
-        std::vector<int>::iterator found = ::easyfind<std::vector<int>, std::vector<int>::iterator>(vec, choice);
-        if (found != vec.end())
-            std::cout << "element found: " << *found << '\n';
-        else
-            std::cout << "element not found.\n";
+        ::easyfind<std::vector<int>, std::vector<int>::iterator>(vec, choice);
     }
     return 0;
 }

@@ -13,7 +13,7 @@ int main(int c, char **v)
         std::cout << "input:\n";
         std::cout << "arg1 = " << arg1 << "\narg2 = " << arg2 << '\n';
         std::cout << "Swapping input..\n";
-        ::swap(&arg1, &arg2);
+        ::swap(arg1, arg2);
         std::cout << "arg1 = " << arg1 << "\narg2 = " << arg2 << '\n';
         result = ::max(arg1, arg2);
         std::cout << "max = " << result << '\n';
