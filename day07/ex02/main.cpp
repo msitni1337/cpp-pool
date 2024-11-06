@@ -1,55 +1,54 @@
 #include "Array.tpp"
-#include <cstdlib>
 #include <iostream>
+#include <iomanip>
+#include <cstring>
+#include <cstdlib>
+#include <string>
 
-
-#define MAX_VAL 750
-int main(int, char**)
+int main(int c, char **v)
 {
-    Array<int> numbers(MAX_VAL);
-    int* mirror = new int[MAX_VAL];
-    srand(time(NULL));
-    for (int i = 0; i < MAX_VAL; i++)
+    if (c == 1)
     {
-        const int value = rand();
-        numbers[i] = value;
-        mirror[i] = value;
-    }
-    //SCOPE
-    {
-        Array<int> tmp = numbers;
-        Array<int> test(tmp);
+        std::cout << "Bad arguments.\nusage: " << v[0] << " [Array of numbers]\n";
+        return 1;
     }
 
-    for (int i = 0; i < MAX_VAL; i++)
+    Array<int> array(c - 1);
+    std::cout << "Array initialized with size " << array.size() << "\n";
+    std::cout << "Array elements initialized to:\n";
+    for (int i = 0; i < c - 1; i++)
     {
-        if (mirror[i] != numbers[i])
+        std::cout << array[i] << '\n';
+        array[i] = std::atoi(v[i + 1]);
+    }
+    int response = 0;
+    while (true)
+    {
+        std::cout << "Enter index to fetch the number (negative to exit): ";
+        std::cin >> response;
+        if (response < 0)
+            break;
+        try
         {
-            std::cerr << "didn't save the same value!!" << std::endl;
-            return 1;
+            std::cout << "Value at index [" << response << "] is:\n";
+            std::cout << array[response] << '\n';
         }
-    }
-    try
+        catch (const std::exception &e)
+        {
+            std::cerr << "Exception caught.\n";
+            std::cerr << "What: " << e.what() << '\n';
+        }
+    };
     {
-        numbers[-2] = 0;
+        std::cout << "\nCopying array to array2..\n";
+        Array<int> array2 = array;
+        std::cout << "Listing array2 elements..\n";
+        for (size_t i = 0; i < array2.size(); i++)
+            std::cout << array2[i] << '\n';
+        std::cout << "Deleting Array2..\n";
     }
-    catch(const std::exception& e)
-    {
-        std::cerr << e.what() << '\n';
-    }
-    try
-    {
-        numbers[MAX_VAL] = 0;
-    }
-    catch(const std::exception& e)
-    {
-        std::cerr << e.what() << '\n';
-    }
-
-    for (int i = 0; i < MAX_VAL; i++)
-    {
-        numbers[i] = rand();
-    }
-    delete [] mirror;//
+    std::cout << "Listing original array elements..\n";
+    for (size_t i = 0; i < array.size(); i++)
+        std::cout << array[i] << '\n';
     return 0;
 }
