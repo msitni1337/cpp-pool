@@ -5,7 +5,7 @@
 class Span
 {
 public:
-    class SpanIsFullException : std::exception
+    class SpanIsFullException : public std::exception
     {
     private:
     public:
@@ -26,7 +26,7 @@ public:
 
 private:
     int *_buff;
-    unsigned int _count;
+    unsigned int _capacity;
     unsigned int _curr;
 
 public:
@@ -35,8 +35,10 @@ public:
     Span &operator=(const Span &sp);
     int &operator[](unsigned int index);
     ~Span();
-    void AddNumber(int num);
-    void AddNumbers(int *first, int *last);
+    void addNumber(int num);
+    void addNumbers(int *first, int *last);
     unsigned int shortestSpan() const;
     unsigned int longestSpan() const;
+    unsigned int getCapacity() const;
+    unsigned int getCurr() const;
 };
