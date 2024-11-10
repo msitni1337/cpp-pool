@@ -1,7 +1,7 @@
 SRC= main.cpp
 OBJ=${SRC:.cpp=.o}
 
-NAME=EasyFind
+NAME=Span
 CFLAGS=-Wall -Werror -Wextra -std=c++98 #-fsanitize=address
 CXX=c++
 

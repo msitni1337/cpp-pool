@@ -6,13 +6,19 @@ int main(int c, char **v)
 {
     if (c == 1)
     {
-        std::cout << "Bad arguments.\nusage: " << v[0] << " [Array of numbers]\n";
+        std::cout << "Bad arguments.\nusage: " << v[0] << " [Array of positive numbers]\n";
         return 1;
     }
     std::vector<int> vec(c - 1);
     for (int i = 0; i < c - 1; i++)
+    {
         vec[i] = atoi(v[i + 1]);
-
+        if (vec[i] < 0)
+        {
+            std::cout << "Only positive numbers are allowed.\nusage: " << v[0] << " [Array of positive numbers]\n";
+            return 2;
+        }
+    }
     while (true)
     {
         int choice;
