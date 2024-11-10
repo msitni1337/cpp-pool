@@ -2,68 +2,75 @@
 
 /*constructors*/
 template <class T>
-MutantStack<T>::iterator::iterator(const ms_iterator &it)
+MutantStack<T>::iterator::iterator(T &ptr) : _ptr(&ptr)
 {
-    (void)it;
 }
 template <class T>
-MutantStack<T>::iterator::iterator(const MutantStack<T>::iterator &it)
+MutantStack<T>::iterator::iterator(const MutantStack<T>::iterator &it) : _ptr(it._ptr)
 {
-    (void)it;
 }
 template <class T>
 typename MutantStack<T>::iterator &MutantStack<T>::iterator::operator=(const MutantStack<T>::iterator &it)
 {
-    (void)it;
+    if (this == &it)
+        return *this;
+    _ptr = it._ptr;
+    return *this;
 }
 template <class T>
 MutantStack<T>::iterator::~iterator()
 {
 }
+
 /*operators*/
 template <class T>
 void MutantStack<T>::iterator::operator++(int n)
 {
     (void)n;
+    ++_ptr;
 }
 template <class T>
 void MutantStack<T>::iterator::operator--(int n)
 {
     (void)n;
+    --_ptr;
 }
 template <class T>
 void MutantStack<T>::iterator::operator++()
 {
+    _ptr++;
 }
 template <class T>
 void MutantStack<T>::iterator::operator--()
 {
+    _ptr--;
 }
 template <class T>
 bool MutantStack<T>::iterator::operator!=(const MutantStack<T>::iterator &rhs)
 {
-    (void)rhs;
-    return false;
+    return this->_ptr != rhs._ptr;
 }
 template <class T>
 T MutantStack<T>::iterator::operator*()
 {
-    return *this;
+    return *_ptr;
 }
 /*constructors*/
 template <class T>
-MutantStack<T>::MutantStack()
+MutantStack<T>::MutantStack() : std::stack<T>()
 {
 }
 template <class T>
-MutantStack<T>::MutantStack(const MutantStack<T> &ms)
+MutantStack<T>::MutantStack(const MutantStack<T> &ms) : std::stack<T>(ms)
 {
-    (void)ms;
 }
 template <class T>
 MutantStack<T> &MutantStack<T>::operator=(const MutantStack<T> &ms)
 {
-    (void)ms;
+    if (this == &ms)
+        return *this;
+    this = ms;
+    return *this;
 }
 template <class T>
 MutantStack<T>::~MutantStack()
@@ -71,12 +78,15 @@ MutantStack<T>::~MutantStack()
 }
 /*member functions*/
 template <class T>
-typename MutantStack<T>::iterator &MutantStack<T>::begin()
+typename MutantStack<T>::iterator MutantStack<T>::begin()
 {
-    return *this;
+    MutantStack<T>::iterator start(std::stack<T>::c.front());
+    return start;
 }
 template <class T>
-typename MutantStack<T>::iterator &MutantStack<T>::end()
+typename MutantStack<T>::iterator MutantStack<T>::end()
 {
-    return *this;
+    MutantStack<T>::iterator finish(std::stack<T>::c.back());
+    finish++;
+    return finish;
 }

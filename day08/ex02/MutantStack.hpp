@@ -8,10 +8,9 @@ public:
     class iterator
     {
     private:
-        typedef typename std::deque<T>::iterator ms_iterator;
-        ms_iterator _it;
+        T* _ptr;
     public:
-        iterator(const ms_iterator &it);
+        iterator(T& ptr);
         iterator(const MutantStack<T>::iterator &it);
         MutantStack<T>::iterator & operator=(const MutantStack<T>::iterator &it);
         ~iterator();
@@ -22,12 +21,11 @@ public:
         bool operator!=(const MutantStack<T>::iterator &rhs);
         T operator*();
     };
-
 public:
     MutantStack();
     MutantStack(const MutantStack<T> &ms);
     MutantStack<T> &operator=(const MutantStack<T> &ms);
     ~MutantStack();
-    MutantStack<T>::iterator &begin();
-    MutantStack<T>::iterator &end();
+    MutantStack<T>::iterator begin();
+    MutantStack<T>::iterator end();
 };
