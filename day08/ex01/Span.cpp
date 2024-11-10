@@ -27,9 +27,10 @@ Span &Span::operator=(const Span &sp)
     delete[] _buff;
     _count = sp._count;
     _buff = new int[_count];
-    for (size_t i = 0; i < _count; i++)
-        _buff[i] = sp._buff[i];
-    _curr = sp._curr;
+    std::for_each(sp._buff, sp._buff + sp._curr, [this] (int num) -> void {
+        (*this)[this->_curr] = num;
+        this->_curr++;
+    });
     return *this;
 }
 int &Span::operator[](unsigned int index)
@@ -53,7 +54,7 @@ void Span::AddNumbers(int *first, int *last)
 {
     if (last - first >= _count - _curr)
         throw Span::SpanIsFullException();
-    std::for_each(first, last, [this] (int num) -> void {
+    auto ff = std::for_each(first, last, [this] (int num) {
         (*this)[this->_curr] = num;
         this->_curr++;
     });
