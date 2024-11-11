@@ -1,6 +1,7 @@
 #pragma once
 #include <exception>
 #include <algorithm>
+#include <cstddef>
 
 class Span
 {

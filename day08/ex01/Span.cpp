@@ -27,7 +27,7 @@ Span &Span::operator=(const Span &sp)
     delete[] _buff;
     _capacity = sp._capacity;
     _buff = new int[_capacity];
-    std::copy_n(sp._buff, sp._curr, _buff);
+    std::copy(sp._buff, sp._buff + sp._curr, _buff);
     return *this;
 }
 int &Span::operator[](unsigned int index)
@@ -62,7 +62,7 @@ unsigned int Span::shortestSpan() const
         throw Span::ImpossibleToFindASpan();
     Span tmpsp = *this;
     std::sort(tmpsp._buff, tmpsp._buff + _curr);
-    unsigned int sh_span = UINT32_MAX;
+    unsigned int sh_span = __UINT32_MAX__;
     for (size_t i = 0; i < _curr - 1; i++)
     {
         unsigned int tmp = tmpsp._buff[i + 1] - tmpsp._buff[i];
