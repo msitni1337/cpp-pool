@@ -23,7 +23,8 @@ int main()
         int nums[] = {1, 2, 3};
         try
         {
-            sp.addNumbers(nums, nums + 3);
+            sp.addNumbers(nums, nums + 1);
+            sp.addNumbers(nums + 1, nums + 3);
         }
         catch (const std::exception &e)
         {

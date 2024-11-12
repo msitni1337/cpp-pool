@@ -53,7 +53,7 @@ void Span::addNumbers(int *first, int *last)
         return;
     if (last - first > _capacity - _curr)
         throw Span::SpanIsFullException();
-    std::copy(first, last, _buff);
+    std::copy(first, last, _buff + _curr);
     _curr += last - first;
 }
 unsigned int Span::shortestSpan() const
