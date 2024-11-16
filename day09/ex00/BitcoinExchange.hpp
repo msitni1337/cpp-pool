@@ -4,6 +4,18 @@
 #include <fstream>
 #include <iostream>
 #include <cstdlib>
+#include <iomanip>
+#include <cmath>
+
+#define AUGUST 8
+#define FEBRUARY 2
+typedef struct date_s
+{
+    unsigned int year;
+    unsigned int month;
+    unsigned int day;
+    unsigned long stamp;
+} date_t;
 
 class BitcoinExchange
 {
@@ -15,4 +27,5 @@ public:
     BitcoinExchange(const BitcoinExchange &be);
     BitcoinExchange &operator=(const BitcoinExchange &be);
     ~BitcoinExchange();
+    void predict(std::ifstream &input_file) const;
 };
