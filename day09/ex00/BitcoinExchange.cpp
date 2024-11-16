@@ -106,7 +106,7 @@ void BitcoinExchange::predict(std::ifstream &input_file) const
             std::cout << "Error: too large a number." << '\n';
             continue;
         }
-        std::__1::map<unsigned long, float>::const_iterator it = _db.lower_bound(date.stamp);
+        std::map<unsigned long, float>::const_iterator it = _db.lower_bound(date.stamp);
         while (it->first > date.stamp)
             it--;
         std::cout << std::setfill('0') << date.year << '-' << std::setw(2) << date.month << '-' << std::setw(2) << date.day << " => " << value << " = " << it->second * value << '\n';
