@@ -17,42 +17,60 @@ RPN::~RPN()
 }
 static inline bool is_numeric(std::string &param)
 {
-    size_t i;
-    for (i = 0; i < param.length() && std::isdigit(param[i]); i++)
+    size_t i = 0;
+    for (; i < param.length() && (param[i] == '-' || param[i] == '+'); i++)
+        ;
+    if (i >= param.length())
+        return false;
+    for (; i < param.length() && std::isdigit(param[i]); i++)
         ;
     if (i > 0 && i == param.length())
         return true;
     return false;
 }
+static bool do_op(std::stack<long> &stck, std::string op)
+{
+    long num1 = stck.top();
+    stck.pop();
+    long num2 = stck.top();
+    stck.pop();
+    if (op == "+")
+        stck.push(num2 + num1);
+    else if (op == "-")
+        stck.push(num2 - num1);
+    else if (op == "*")
+        stck.push(num2 * num1);
+    else if (op == "/")
+    {
+        if (num1 == 0)
+        {
+            std::cout << "Dividing by zero.\n";
+            return false;
+        }
+        stck.push(num2 / num1);
+    }
+    return true;
+}
 void RPN::solve(std::istringstream &operations)
 {
     while (_op.size())
         _op.pop();
-    std::stack<std::string> tmp_stack;
     while (operations.eof() == false)
     {
-        std::string param;
-        operations >> param;
-        if (is_numeric(param) == false)
+        std::string str;
+        operations >> str;
+        if (is_numeric(str))
+            _op.push(std::strtol(str.c_str(), NULL, 10));
+        else if (_op.size() > 1 && (str == "+" || str == "-" || str == "*" || str == "/") && do_op(_op, str))
+            ;
+        else
         {
-            if (param == "-" || param == "+" || param == "/" || param == "*")
-            {
-                tmp_stack.push(param);
-                continue;
-            }
             std::cout << "Error\n";
             return;
         }
-        tmp_stack.push(param);
     }
-    while (tmp_stack.size())
-    {
-        _op.push(tmp_stack.top());
-        tmp_stack.pop();
-    }
-    while (_op.size())
-    {
+    if (_op.size() == 1)
         std::cout << _op.top() << '\n';
-        _op.pop();
-    }
+    else
+        std::cout << "Error\n";
 }

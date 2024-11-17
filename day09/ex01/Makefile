@@ -2,7 +2,7 @@ SRC= RPN.cpp main.cpp
 OBJ=${SRC:.cpp=.o}
 
 NAME=RPN
-CFLAGS=-Wall -Werror -Wextra -std=c++98 #-fsanitize=address
+CFLAGS=-Wall -Werror -Wextra -std=c++98 #-fsanitize=address -g3
 CXX=c++
 
 .SECONDARY: ${OBJ}

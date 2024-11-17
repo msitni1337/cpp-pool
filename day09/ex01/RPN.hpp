@@ -9,7 +9,7 @@
 class RPN
 {
 private:
-    std::stack<std::string> _op;
+    std::stack<long> _op;
 public:
     RPN();
     RPN(const RPN& rpn);
