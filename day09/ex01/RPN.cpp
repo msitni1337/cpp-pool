@@ -59,6 +59,8 @@ void RPN::solve(std::istringstream &operations)
     {
         std::string str;
         operations >> str;
+        if (str.length() == 0)
+            break;
         if (is_numeric(str))
             _op.push(std::strtol(str.c_str(), NULL, 10));
         else if (_op.size() > 1 && (str == "+" || str == "-" || str == "*" || str == "/") && do_op(_op, str))
