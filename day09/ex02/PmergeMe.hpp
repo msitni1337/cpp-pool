@@ -7,6 +7,14 @@
 #include <set>
 #include <list>
 
+template<class T> void swap(T &a, T &b)
+{
+    T tmp = a;
+
+    a = b;
+    b = tmp;
+}
+
 template <class T>
 class Pair
 {
@@ -24,10 +32,6 @@ public:
         return *this;
     };
     ~Pair() {};
-    bool operator>(const Pair<T> &rhs)
-    {
-        return (_value > rhs._value);
-    };
     Pair<T> *GetOther() const
     {
         return _other;
