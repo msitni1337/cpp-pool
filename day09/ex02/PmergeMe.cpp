@@ -4,7 +4,7 @@ static inline bool is_numeric(std::string &param)
 {
     size_t i = 0;
     if (param.length() == 0)
-        return true;
+        return false;
     for (; i < param.length() && (param[i] == '-' || param[i] == '+'); i++)
         ;
     if (i >= param.length())
@@ -28,14 +28,12 @@ bool PmergeMe::Sortlist(std::string string)
         {
             std::string r_num1;
             stream >> r_num1;
-            std::cout << "got1: " <<r_num1<<'\n';
             if (is_numeric(r_num1) == false)
                 return false;
             long num1 = std::strtol(r_num1.c_str(), NULL, 10);
 
             std::string r_num2;
             stream >> r_num2;
-            std::cout << "got2: " <<r_num2<<'\n';
             if (is_numeric(r_num2) == false)
             {
                 if (stream.eof() && r_num2.empty())
@@ -49,15 +47,12 @@ bool PmergeMe::Sortlist(std::string string)
             long num2 = std::strtol(r_num2.c_str(), NULL, 10);
             if (num1 < num2)
                 std::swap(num1, num2);
-            Pair<long> Anum = num1;
-            Pair<long> Bnum = num2;
-            std::list<Pair<long> >::iterator node = _list[1].insert(BIte, Bnum);
-            // Anum.SetOther(*node);
-            (void)node;
-            _list[0].insert(AIte, Anum);
+            std::list<Pair<long> >::iterator Bnum = _list[1].insert(BIte, num2);
+            std::list<Pair<long> >::iterator Anum = _list[0].insert(AIte, num1);
+            (void) Bnum,(void) Anum;
+           (*Anum).SetOther(&(*Bnum));
         }
     }
-
     // sorting A
     {
         std::list<Pair<long> >::iterator AIt = _list[0].begin();
@@ -91,33 +86,37 @@ bool PmergeMe::Sortlist(std::string string)
             Pair<long> *other = (*AIt).GetOther();
             if (other == NULL)
                 continue;
+            (*AIt).SetOther(NULL);
             std::list<Pair<long> >::iterator _AIt = _list[0].begin();
             std::list<Pair<long> >::iterator _AIte = _list[0].end();
-            do
+            while (_AIt != _AIte)
             {
-                if (_AIt == _AIte || other->GetValue() <= (*_AIt).GetValue())
+                if (other->GetValue() <= (*_AIt).GetValue())
                 {
                     _list[0].insert(_AIt, *other);
                     break;
                 }
                 _AIt++;
-            } while (_AIt != _AIte);
+                if (AIt == AIte)
+                    _list[0].insert(AIt, *other);
+            }
         }
     }
     if (is_odd)
     {
-        std::cout << " set is odd \n";
         std::list<Pair<long> >::iterator AIt = _list[0].begin();
         std::list<Pair<long> >::iterator AIte = _list[0].end();
-        do
+        while (AIt != AIte)
         {
-            if (AIt == AIte || left_over <= (*AIt).GetValue())
+            if (left_over <= (*AIt).GetValue())
             {
                 _list[0].insert(AIt, left_over);
                 break;
             }
             AIt++;
-        } while (AIt != AIte);
+            if (AIt == AIte)
+                _list[0].insert(AIt, left_over);
+        }
     }
     return true;
 }
@@ -135,7 +134,6 @@ bool PmergeMe::SortMultiset(std::string string)
         if (is_numeric(r_num1) == false)
             return false;
         long num1 = std::strtol(r_num1.c_str(), NULL, 10);
-        std::cout << "got1: "<< r_num1<<'\n';
         std::string r_num2;
         stream >> r_num2;
         if (is_numeric(r_num2) == false)
@@ -148,7 +146,6 @@ bool PmergeMe::SortMultiset(std::string string)
             }
             return false;
         }
-        std::cout << "got2: "<< r_num2<<'\n';
         long num2 = std::strtol(r_num2.c_str(), NULL, 10);
         if (num1 < num2)
             std::swap(num1, num2);
@@ -165,6 +162,7 @@ bool PmergeMe::SortMultiset(std::string string)
 }
 PmergeMe::PmergeMe(std::string numbers)
 {
+    /*
     {
         if (SortMultiset(numbers) == false)
         {
@@ -172,12 +170,14 @@ PmergeMe::PmergeMe(std::string numbers)
             return;
         }
         std::stringstream stream(numbers);
-        std::string raw_n;
         long num;
         std::cout << "original set: ";
         while (stream.eof() == false)
         {
+            std::string raw_n;
             stream >> raw_n;
+            if (raw_n.length() == 0)
+                break;
             num = std::strtol(raw_n.c_str(), NULL, 10);
             std::cout << num << ' ';
         }
@@ -189,20 +189,23 @@ PmergeMe::PmergeMe(std::string numbers)
             std::cout << *it << ' ';
         std::cout << '\n';
     }
-    return;
+    */
     {
+
         if (Sortlist(numbers) == false)
         {
             std::cerr << "Error invalid number\n";
             return;
         }
         std::stringstream stream(numbers);
-        std::string raw_n;
         long num;
         std::cout << "original set: ";
         while (stream.eof() == false)
         {
+            std::string raw_n;
             stream >> raw_n;
+            if (raw_n.length() == 0)
+                break;
             num = std::strtol(raw_n.c_str(), NULL, 10);
             std::cout << num << ' ';
         }

@@ -32,9 +32,9 @@ public:
     {
         return _other;
     };
-    void SetOther(Pair<T> &other)
+    void SetOther(Pair<T> *other)
     {
-        _other = &other;
+        _other = other;
     };
     const T &
     GetValue() const
@@ -42,6 +42,7 @@ public:
         return _value;
     };
 };
+
 class PmergeMe
 {
 
