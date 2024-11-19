@@ -3,14 +3,51 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <algorithm>
 #include <set>
 #include <list>
 
-class PmergeMe
+template <class T>
+class Pair
 {
 private:
+    T _value;
+    Pair<T> *_other;
+
+public:
+    Pair(const T value) : _value(value), _other(NULL) {};
+    Pair(const Pair<T> &pair) : _value(pair._value), _other(pair._other) {};
+    Pair<T> operator=(const Pair<T> &pair)
+    {
+        _value = pair._value;
+        _other = pair._other;
+        return *this;
+    };
+    ~Pair() {};
+    bool operator>(const Pair<T> &rhs)
+    {
+        return (_value > rhs._value);
+    };
+    Pair<T> *GetOther() const
+    {
+        return _other;
+    };
+    void SetOther(Pair<T> &other)
+    {
+        _other = &other;
+    };
+    const T &
+    GetValue() const
+    {
+        return _value;
+    };
+};
+class PmergeMe
+{
+
+private:
     std::multiset<long> _mset[2];
-    std::list<long> _list[2];
+    std::list<Pair<long> > _list[2];
 
 public:
     PmergeMe(std::string numbers);
@@ -19,5 +56,6 @@ public:
     ~PmergeMe();
 
 private:
-    bool SortMultiset(std::stringstream& numbers);
+    bool Sortlist(std::string string);
+    bool SortMultiset(std::string string);
 };
