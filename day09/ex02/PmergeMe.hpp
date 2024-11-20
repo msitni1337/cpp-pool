@@ -36,7 +36,9 @@ public:
     {
         if (&pair == this)
             return *this;
-        _is_pair = pair._is_pair, _A = pair._A, _B = pair._B;
+        _is_pair = pair._is_pair;
+        _A = pair._A;
+        _B = pair._B;
         return *this;
     };
     ~Pair() 
@@ -83,6 +85,7 @@ private:
     bool PerformList(std::string numbers);
     bool Sortlist(std::string string);
     bool SortMultiset(std::string string);
+    bool AreSorted();
     void Print_list(std::string numbers);
     void Print_multiset(std::string numbers);
 };

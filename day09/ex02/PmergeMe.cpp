@@ -68,23 +68,22 @@ bool PmergeMe::Sortlist(std::string string)
     // sorting A
     {
         std::list<Pair<long> >::iterator AIt = _list.begin();
-        std::list<Pair<long> >::iterator AIte = _list.end();
 
         bool swapped = true;
-        for (; swapped && AIt != AIte; AIt++) // iterating over the A list ..
+        while (swapped && AIt != _list.end()) // iterating over the A list ..
         {
-            bool swapped = false;
+            swapped = false;
             std::list<Pair<long> >::iterator _AIt = AIt;
             _AIt++;
-            for (; _AIt != AIte; _AIt++) // iterating over the A list ..
+            for (; _AIt != _list.end(); _AIt++) // iterating over the A list ..
             {
                 if (AIt->GetA() > _AIt->GetA())
                 {
                     ::swap((*AIt), (*_AIt));
                     swapped = true;
                 }
-                else
-                    break;
+                AIt++;
+                _AIt = AIt;
             }
             if (swapped)
                 AIt = _list.begin();
@@ -237,6 +236,26 @@ bool PmergeMe::PerformList(std::string numbers)
     }
     return true;
 }
+bool PmergeMe::AreSorted()
+{
+    {
+        std::multiset<Pair<long> >::iterator it = _mset.begin();
+        std::multiset<Pair<long> >::iterator _it = it;
+        _it++;
+        for (; _it != _mset.end(); it++ , _it = it, _it++)
+            if (it->GetA() > _it->GetA())
+                return false;
+    }
+    {
+        std::list<Pair<long> >::iterator it = _list.begin();
+        std::list<Pair<long> >::iterator _it = it;
+        _it++;
+        for (; _it != _list.end(); it++ , _it = it, _it++)
+            if (it->GetA() > _it->GetA())
+                return false;
+    }
+    return true;
+}
 PmergeMe::PmergeMe(std::string numbers) : _list()
 {
     t_time then, now;
@@ -260,6 +279,11 @@ PmergeMe::PmergeMe(std::string numbers) : _list()
     }
     gettimeofday(&now, NULL);
     list_time = ((now.tv_sec - then.tv_sec) * 1000000) + now.tv_usec - then.tv_usec;
+    if (AreSorted() == false)
+    {
+        std::cerr << "Error numbers are not sorted\n";
+        return;
+    }
     Print_multiset(numbers);
     Print_list(numbers);
     std::cout << "Time to process a range of " << count << " elements with std::multiset " << multiset_time << " us\n";
