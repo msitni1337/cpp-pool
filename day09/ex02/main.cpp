@@ -2,6 +2,7 @@
 
 int main(int c, char **v)
 {
+    // ./PmergeMe 2 5 6 3 "3 4 4 5 3 6" not sorted ??
     if (c > 1)
     {
         std::string args;
