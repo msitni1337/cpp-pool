@@ -6,6 +6,10 @@
 #include <algorithm>
 #include <set>
 #include <list>
+#include <vector>
+#include <sys/time.h>
+
+typedef struct timeval t_time;
 
 template<class T> void swap(T &a, T &b)
 {
@@ -19,40 +23,53 @@ template <class T>
 class Pair
 {
 private:
-    T _value;
-    Pair<T> *_other;
+    bool _is_pair;
+    T _A;
+    T _B;
 
 public:
-    Pair(const T value) : _value(value), _other(NULL) {};
-    Pair(const Pair<T> &pair) : _value(pair._value), _other(pair._other) {};
+    Pair(const T& A, const T& B) : _is_pair(true), _A(A), _B(B) {};
+    Pair(const T& A) : _is_pair(false), _A(A) {};
+    Pair(const Pair<T> &pair) : _is_pair(pair._is_pair), _A(pair._A), _B(pair._B) {};
     Pair<T> operator=(const Pair<T> &pair)
     {
-        _value = pair._value;
-        _other = pair._other;
+        if (&pair == this)
+            return *this;
+        _is_pair = pair._is_pair, _A = pair._A, _B = pair._B;
         return *this;
     };
-    ~Pair() {};
-    Pair<T> *GetOther() const
+    ~Pair() 
+    {};
+    const bool& isPair() const
     {
-        return _other;
+        return _is_pair;
     };
-    void SetOther(Pair<T> *other)
+    void SetisPair(bool b)
     {
-        _other = other;
+        _is_pair = b;
     };
-    const T &
-    GetValue() const
+    const T& GetA() const
     {
-        return _value;
+        return _A;
     };
+    const T& GetB() const
+    {
+        return _B;
+    };
+
+};
+template<class T>
+int operator<(const Pair<T> &a, const Pair<T> &b)
+{
+    return (a.GetA() < b.GetA());
 };
 
 class PmergeMe
 {
 
 private:
-    std::multiset<long> _mset[2];
-    std::list<Pair<long> > _list[2];
+    std::multiset<Pair<long> > _mset;
+    std::list<Pair<long> > _list;
 
 public:
     PmergeMe(std::string numbers);
@@ -61,6 +78,8 @@ public:
     ~PmergeMe();
 
 private:
+    bool PerformMultiSet(std::string numbers);
+    bool PerformList(std::string numbers);
     bool Sortlist(std::string string);
     bool SortMultiset(std::string string);
 };

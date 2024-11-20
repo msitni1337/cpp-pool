@@ -2,7 +2,7 @@ SRC= PmergeMe.cpp main.cpp
 OBJ=${SRC:.cpp=.o}
 
 NAME=PmergeMe
-CFLAGS=-Wall -Werror -Wextra -std=c++98# -g3 -fsanitize=address
+CFLAGS=-Wall -Werror -Wextra -std=c++98 -g3 -fsanitize=address
 CXX=c++
 
 .SECONDARY: ${OBJ}
