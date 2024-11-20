@@ -10,17 +10,30 @@ static inline bool is_numeric(std::string &param)
         return true;
     return false;
 }
-static std::string get_next_string(std::stringstream & stream)
+static std::string get_next_string(std::stringstream &stream)
 {
     std::string str;
-    
+
     do
     {
         str.clear();
         stream >> str;
-    }
-    while(str.length() == 0 && stream.eof() == false);
+    } while (str.length() == 0 && stream.eof() == false);
     return str;
+}
+static inline size_t get_count(std::string numbers)
+{
+    size_t count = 0;
+    std::stringstream stream(numbers);
+
+    while (stream.eof() == false)
+    {
+        std::string r_num1 = get_next_string(stream);
+        if (r_num1.length() == 0)
+            break;
+        count++;
+    }
+    return count;
 }
 bool PmergeMe::Sortlist(std::string string)
 {
@@ -115,11 +128,10 @@ bool PmergeMe::Sortlist(std::string string)
                 if (AIt == AIte)
                     _list.insert(AIt, left_over);
             }
-    }
+        }
     }
     return true;
 }
-
 bool PmergeMe::SortMultiset(std::string string)
 {
     long left_over;
@@ -163,16 +175,11 @@ bool PmergeMe::SortMultiset(std::string string)
         _mset.insert(left_over);
     return true;
 }
-bool PmergeMe::PerformMultiSet(std::string numbers)
+void PmergeMe::Print_multiset(std::string numbers)
 {
-    if (SortMultiset(numbers) == false)
-    {
-        std::cerr << "Error invalid number\n";
-        return false;
-    }
     std::stringstream stream(numbers);
     long num;
-    std::cout << "original set: \n";
+    std::cout << "Before using [std::multiset] : \n";
     while (stream.eof() == false)
     {
         std::string raw_n;
@@ -183,13 +190,43 @@ bool PmergeMe::PerformMultiSet(std::string numbers)
         std::cout << num << ' ';
     }
     std::cout << '\n';
-    std::cout << "sorted set: \n";
+    std::cout << "After using [std::multiset] : \n";
     std::multiset<Pair<long> >::iterator it = _mset.begin();
     std::multiset<Pair<long> >::iterator ite = _mset.end();
     for (; it != ite; it++)
         std::cout << it->GetA() << ' ';
     std::cout << '\n';
+}
+bool PmergeMe::PerformMultiSet(std::string numbers)
+{
+    if (SortMultiset(numbers) == false)
+    {
+        std::cerr << "Error invalid number\n";
+        return false;
+    }
     return true;
+}
+void PmergeMe::Print_list(std::string numbers)
+{
+    std::stringstream stream(numbers);
+    long num;
+    std::cout << "Before using [std::list] : \n";
+    while (stream.eof() == false)
+    {
+        std::string raw_n;
+        stream >> raw_n;
+        if (raw_n.length() == 0)
+            break;
+        num = std::strtol(raw_n.c_str(), NULL, 10);
+        std::cout << num << ' ';
+    }
+    std::cout << '\n';
+    std::cout << "After using [std::list] : \n";
+    std::list<Pair<long> >::iterator it = _list.begin();
+    std::list<Pair<long> >::iterator ite = _list.end();
+    for (; it != ite; it++)
+        std::cout << it->GetA() << ' ';
+    std::cout << '\n';
 }
 bool PmergeMe::PerformList(std::string numbers)
 {
@@ -198,58 +235,33 @@ bool PmergeMe::PerformList(std::string numbers)
         std::cerr << "Error invalid number\n";
         return false;
     }
-    std::stringstream stream(numbers);
-    long num;
-    std::cout << "original set: \n";
-    while (stream.eof() == false)
-    {
-        std::string raw_n;
-        stream >> raw_n;
-        if (raw_n.length() == 0)
-            break;
-        num = std::strtol(raw_n.c_str(), NULL, 10);
-        std::cout << num << ' ';
-    }
-    std::cout << '\n';
-    std::cout << "sorted set: \n";
-    std::list<Pair<long> >::iterator it = _list.begin();
-    std::list<Pair<long> >::iterator ite = _list.end();
-    for (; it != ite; it++)
-        std::cout << it->GetA() << ' ';
-    std::cout << '\n';
     return true;
-}
-inline size_t get_count(std::string numbers)
-{
-    size_t count = 0;
-    std::stringstream stream(numbers);
-
-    while (stream.eof() == false)
-    {
-        std::string r_num1 = get_next_string(stream);
-        if (r_num1.length() == 0)
-            break;
-        count++;
-    }
-    return count;
 }
 PmergeMe::PmergeMe(std::string numbers) : _list()
 {
     t_time then, now;
-    float multiset_time;
-    float list_time;
+    long multiset_time;
+    long list_time;
     size_t count = get_count(numbers);
 
     gettimeofday(&then, NULL);
-    if (PerformMultiSet(numbers) == false)
+    if (SortMultiset(numbers) == false)
+    {
+        std::cerr << "Error invalid number\n";
         return;
+    }
     gettimeofday(&now, NULL);
-    multiset_time   = ((now.tv_sec - then.tv_sec) * 1000 * 100) + now.tv_usec - then.tv_usec;
+    multiset_time = ((now.tv_sec - then.tv_sec) * 1000000) + now.tv_usec - then.tv_usec;
     gettimeofday(&then, NULL);
-    if (PerformList(numbers) == false)
+    if (Sortlist(numbers) == false)
+    {
+        std::cerr << "Error invalid number\n";
         return;
+    }
     gettimeofday(&now, NULL);
-    list_time       = ((now.tv_sec - then.tv_sec) * 1000 * 100) + now.tv_usec - then.tv_usec;
+    list_time = ((now.tv_sec - then.tv_sec) * 1000000) + now.tv_usec - then.tv_usec;
+    Print_multiset(numbers);
+    Print_list(numbers);
     std::cout << "Time to process a range of " << count << " elements with std::multiset " << multiset_time << " us\n";
     std::cout << "Time to process a range of " << count << " elements with std::list " << list_time << " us\n";
 }

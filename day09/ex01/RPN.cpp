@@ -18,10 +18,7 @@ RPN::~RPN()
 static inline bool is_numeric(std::string &param)
 {
     size_t i = 0;
-    if (param[i] == '-' || param[i] == '+')
-        i++;
-    if (i >= param.length())
-        return false;
+
     for (; i < param.length() && std::isdigit(param[i]); i++)
         ;
     if (i > 0 && i == param.length())

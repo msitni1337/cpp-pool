@@ -8,6 +8,7 @@
 #include <list>
 #include <vector>
 #include <sys/time.h>
+#include <ctime>
 
 typedef struct timeval t_time;
 
@@ -82,4 +83,6 @@ private:
     bool PerformList(std::string numbers);
     bool Sortlist(std::string string);
     bool SortMultiset(std::string string);
+    void Print_list(std::string numbers);
+    void Print_multiset(std::string numbers);
 };
