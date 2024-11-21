@@ -25,11 +25,11 @@ static inline bool is_numeric(std::string &param)
         return true;
     return false;
 }
-static bool do_op(std::stack<long> &stck, std::string op)
+static bool do_op(std::stack<double> &stck, std::string op)
 {
-    long num1 = stck.top();
+    double num1 = stck.top();
     stck.pop();
-    long num2 = stck.top();
+    double num2 = stck.top();
     stck.pop();
     if (op == "+")
         stck.push(num2 + num1);
