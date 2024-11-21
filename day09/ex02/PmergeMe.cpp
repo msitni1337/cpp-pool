@@ -161,6 +161,7 @@ bool PmergeMe::SortMultiset(std::string string)
             _mset.insert(pair);
         }
     }
+    //No need to sort A list cause multiset are sorted by default when invoking insert();
     std::multiset<Pair<long> >::iterator it = _mset.begin();
     std::multiset<Pair<long> >::iterator ite = _mset.end();
     for (; it != ite; it++)
