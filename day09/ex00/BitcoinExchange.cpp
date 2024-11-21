@@ -4,6 +4,8 @@ static inline bool is_decimal(std::string &param)
 {
     size_t i = 0;
 
+    if (param.empty())
+        return false;
     while (std::isspace(param[i]))
         i++;
     if(param[i] =='-' || param[i] == '+')
@@ -14,9 +16,11 @@ static inline bool is_decimal(std::string &param)
         i++;
     for (; i < param.length() && std::isdigit(param[i]); i++)
         ;
-    if (i && std::isdigit(param[i - 1]))
-        return true;
-    return false;
+    if (i && std::isdigit(param[i - 1]) == false)
+        return false;
+    while (std::isspace(param[i]))
+        i++;    
+    return i >= param.length();
 }
 static date_t parse_date(std::string date)
 {
@@ -130,8 +134,10 @@ void BitcoinExchange::predict(std::ifstream &input_file) const
             continue;
         }
         std::map<unsigned long, float>::const_iterator it = _db.lower_bound(date.stamp);
-        while (it->first > date.stamp)
+        if (it != _db.begin() && it->first > date.stamp)
             it--;
+        if (it == _db.end())
+            it++;
         std::cout << std::setfill('0') << date.year << '-' << std::setw(2) << date.month << '-' << std::setw(2) << date.day << " => " << value << " = " << it->second * value << '\n';
     }
 }
