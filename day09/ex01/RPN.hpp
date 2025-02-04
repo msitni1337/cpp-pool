@@ -3,13 +3,14 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <iomanip>
 #include <algorithm>
 #include <cctype>
 
 class RPN
 {
 private:
-    std::stack<long> _op;
+    std::stack<double> _op;
 public:
     RPN();
     RPN(const RPN& rpn);
