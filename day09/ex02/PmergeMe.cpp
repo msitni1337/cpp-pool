@@ -1,6 +1,6 @@
 #include "PmergeMe.hpp"
 
-static inline bool is_numeric(std::string &param)
+static inline bool is_numeric(std::string& param)
 {
     size_t i = 0;
 
@@ -10,7 +10,7 @@ static inline bool is_numeric(std::string &param)
         return true;
     return false;
 }
-static std::string get_next_string(std::stringstream &stream)
+static std::string get_next_string(std::stringstream& stream)
 {
     std::string str;
 
@@ -23,7 +23,7 @@ static std::string get_next_string(std::stringstream &stream)
 }
 static inline size_t get_count(std::string numbers)
 {
-    size_t count = 0;
+    size_t            count = 0;
     std::stringstream stream(numbers);
 
     while (stream.eof() == false)
@@ -48,12 +48,12 @@ bool PmergeMe::Sortlist(std::string string)
                 break;
             if (is_numeric(r_num1) == false)
                 return false;
-            long num1 = std::strtol(r_num1.c_str(), NULL, 10);
+            long        num1   = std::strtol(r_num1.c_str(), NULL, 10);
             std::string r_num2 = get_next_string(stream);
             if (r_num2.length() == 0)
             {
                 left_over = num1;
-                is_odd = true;
+                is_odd    = true;
                 break;
             }
             if (is_numeric(r_num2) == false)
@@ -72,7 +72,7 @@ bool PmergeMe::Sortlist(std::string string)
         bool swapped = true;
         while (swapped && AIt != _list.end()) // iterating over the A list ..
         {
-            swapped = false;
+            swapped                               = false;
             std::list<Pair<long> >::iterator _AIt = AIt;
             _AIt++;
             for (; _AIt != _list.end(); _AIt++) // iterating over the A list ..
@@ -90,13 +90,13 @@ bool PmergeMe::Sortlist(std::string string)
         }
     }
     {
-        std::list<Pair<long> >::iterator AIt = _list.begin();
+        std::list<Pair<long> >::iterator AIt  = _list.begin();
         std::list<Pair<long> >::iterator AIte = _list.end();
         for (; AIt != AIte; AIt++) // iterating over the A list ..
         {
             if ((*AIt).isPair() == false)
                 continue;
-            std::list<Pair<long> >::iterator _AIt = _list.begin();
+            std::list<Pair<long> >::iterator _AIt  = _list.begin();
             std::list<Pair<long> >::iterator _AIte = _list.end();
             while (_AIt != _AIte)
             {
@@ -114,7 +114,7 @@ bool PmergeMe::Sortlist(std::string string)
     {
         if (is_odd)
         {
-            std::list<Pair<long> >::iterator AIt = _list.begin();
+            std::list<Pair<long> >::iterator AIt  = _list.begin();
             std::list<Pair<long> >::iterator AIte = _list.end();
             while (AIt != AIte)
             {
@@ -131,10 +131,12 @@ bool PmergeMe::Sortlist(std::string string)
     }
     return true;
 }
-bool PmergeMe::SortMultiset(std::string string)
+bool PmergeMe::SortList(std::string string)
 {
-    long left_over;
-    bool is_odd = false;
+    std::list<std::pair<long, long> > pairs_list;
+    long                              left_over;
+    bool                              is_odd = false;
+    // spliting the pairs into A and B chains
     {
         std::stringstream stream(string);
         while (stream.eof() == false)
@@ -144,12 +146,12 @@ bool PmergeMe::SortMultiset(std::string string)
                 break;
             if (is_numeric(r_num1) == false)
                 return false;
-            long num1 = std::strtol(r_num1.c_str(), NULL, 10);
+            long        num1   = std::strtol(r_num1.c_str(), NULL, 10);
             std::string r_num2 = get_next_string(stream);
             if (r_num2.length() == 0)
             {
                 left_over = num1;
-                is_odd = true;
+                is_odd    = true;
                 break;
             }
             if (is_numeric(r_num2) == false)
@@ -157,28 +159,71 @@ bool PmergeMe::SortMultiset(std::string string)
             long num2 = std::strtol(r_num2.c_str(), NULL, 10);
             if (num1 < num2)
                 std::swap(num1, num2);
-            Pair<long> pair(num1, num2);
-            _mset.insert(pair);
+            pairs_list.insert(pairs_list.end(), std::pair<long, long>(num1, num2));
         }
     }
-    //No need to sort A list cause multiset are sorted by default when invoking insert();
-    std::multiset<Pair<long> >::iterator it = _mset.begin();
-    std::multiset<Pair<long> >::iterator ite = _mset.end();
-    for (; it != ite; it++)
+    // sorting by the A chain
     {
-        if (it->isPair() == false)
-            continue;
-        Pair<long> A(it->GetB());
-        _mset.insert(A);
+        std::list<std::pair<long, long> >::iterator AIt = _list.begin();
+
+        bool swapped = true;
+        while (swapped && AIt != _list.end()) // iterating over the A list ..
+        {
+            swapped                               = false;
+            std::list<Pair<long> >::iterator _AIt = AIt;
+            _AIt++;
+            for (; _AIt != _list.end(); _AIt++) // iterating over the A list ..
+            {
+                if (AIt->GetA() > _AIt->GetA())
+                {
+                    ::swap((*AIt), (*_AIt));
+                    swapped = true;
+                }
+                AIt++;
+                _AIt = AIt;
+            }
+            if (swapped)
+                AIt = _list.begin();
+        }
     }
-    if (is_odd)
-        _mset.insert(left_over);
+    // Inserting first pairs to the A chain
+    {
+        std::multiset<std::pair<long, long> >::iterator it = pairs_multiset.begin();
+        for (; it != pairs_multiset.end(); it++)
+            _multiset.insert(it->first);
+    }
+    {
+        int  k      = 0;
+        long last_t = 0;
+        long t      = 0;
+        for (size_t i = 0; _multiset.size() < last_t; i++)
+        {
+            last_t = t;
+            t      = std::pow(2, k + 1);
+            if (k % 2 == 0)
+                t += 1;
+            else
+                t -= 1;
+            t /= 3;
+            std::multiset<std::pair<long, long> >::iterator it = pairs_multiset.;
+            for (; it != pairs_multiset.end(); it++)
+            {
+                // Get the index number and insert it into it's place
+                if (it->isPair() == false)
+                    continue;
+                Pair<long> A(it->GetB());
+                _mset.insert(A);
+            }
+            if (is_odd)
+                _mset.insert(left_over);
+        }
+    }
     return true;
 }
 void PmergeMe::Print_multiset(std::string numbers)
 {
     std::stringstream stream(numbers);
-    long num;
+    long              num;
     std::cout << "Before using [std::multiset] : \n";
     while (stream.eof() == false)
     {
@@ -191,7 +236,7 @@ void PmergeMe::Print_multiset(std::string numbers)
     }
     std::cout << '\n';
     std::cout << "After using [std::multiset] : \n";
-    std::multiset<Pair<long> >::iterator it = _mset.begin();
+    std::multiset<Pair<long> >::iterator it  = _mset.begin();
     std::multiset<Pair<long> >::iterator ite = _mset.end();
     for (; it != ite; it++)
         std::cout << it->GetA() << ' ';
@@ -209,7 +254,7 @@ bool PmergeMe::PerformMultiSet(std::string numbers)
 void PmergeMe::Print_list(std::string numbers)
 {
     std::stringstream stream(numbers);
-    long num;
+    long              num;
     std::cout << "Before using [std::list] : \n";
     while (stream.eof() == false)
     {
@@ -222,7 +267,7 @@ void PmergeMe::Print_list(std::string numbers)
     }
     std::cout << '\n';
     std::cout << "After using [std::list] : \n";
-    std::list<Pair<long> >::iterator it = _list.begin();
+    std::list<Pair<long> >::iterator it  = _list.begin();
     std::list<Pair<long> >::iterator ite = _list.end();
     for (; it != ite; it++)
         std::cout << it->GetA() << ' ';
@@ -240,18 +285,18 @@ bool PmergeMe::PerformList(std::string numbers)
 bool PmergeMe::AreSorted()
 {
     {
-        std::multiset<Pair<long> >::iterator it = _mset.begin();
+        std::multiset<Pair<long> >::iterator it  = _mset.begin();
         std::multiset<Pair<long> >::iterator _it = it;
         _it++;
-        for (; _it != _mset.end(); it++ , _it = it, _it++)
+        for (; _it != _mset.end(); it++, _it = it, _it++)
             if (it->GetA() > _it->GetA())
                 return false;
     }
     {
-        std::list<Pair<long> >::iterator it = _list.begin();
+        std::list<Pair<long> >::iterator it  = _list.begin();
         std::list<Pair<long> >::iterator _it = it;
         _it++;
-        for (; _it != _list.end(); it++ , _it = it, _it++)
+        for (; _it != _list.end(); it++, _it = it, _it++)
             if (it->GetA() > _it->GetA())
                 return false;
     }
@@ -260,8 +305,8 @@ bool PmergeMe::AreSorted()
 PmergeMe::PmergeMe(std::string numbers) : _list()
 {
     t_time then, now;
-    long multiset_time;
-    long list_time;
+    long   multiset_time;
+    long   list_time;
     size_t count = get_count(numbers);
 
     gettimeofday(&then, NULL);
@@ -287,14 +332,16 @@ PmergeMe::PmergeMe(std::string numbers) : _list()
     }
     Print_multiset(numbers);
     Print_list(numbers);
-    std::cout << "Time to process a range of " << count << " elements with std::multiset " << multiset_time << " us\n";
-    std::cout << "Time to process a range of " << count << " elements with std::list " << list_time << " us\n";
+    std::cout << "Time to process a range of " << count << " elements with std::multiset "
+              << multiset_time << " us\n";
+    std::cout << "Time to process a range of " << count << " elements with std::list " << list_time
+              << " us\n";
 }
-PmergeMe::PmergeMe(const PmergeMe &pmm)
+PmergeMe::PmergeMe(const PmergeMe& pmm)
 {
     *this = pmm;
 }
-PmergeMe &PmergeMe::operator=(const PmergeMe &pmm)
+PmergeMe& PmergeMe::operator=(const PmergeMe& pmm)
 {
     if (this != &pmm)
     {
@@ -303,6 +350,4 @@ PmergeMe &PmergeMe::operator=(const PmergeMe &pmm)
     }
     return *this;
 }
-PmergeMe::~PmergeMe()
-{
-}
+PmergeMe::~PmergeMe() {}

@@ -9,13 +9,14 @@
 #include <string>
 #include <sys/time.h>
 #include <vector>
+#include <cmath>
 
 class PmergeMe
 {
 
 private:
-    std::multiset<std::pair<long, long> > _pair_multiset;
-    std::vector<std::pair<long, long> >   _pair_vector;
+    std::list<long> _list;
+    std::vector<long>   _vector;
 
 public:
     PmergeMe(std::string numbers);
@@ -26,7 +27,7 @@ public:
 private:
     bool PerformMultiSet(std::string numbers);
     bool PerformList(std::string numbers);
-    bool Sortlist(std::string string);
+    bool SortList(std::string string);
     bool SortMultiset(std::string string);
     bool AreSorted();
     void PrintVector(std::string numbers);
