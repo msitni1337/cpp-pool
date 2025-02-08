@@ -35,107 +35,17 @@ static inline size_t get_count(std::string numbers)
     }
     return count;
 }
-bool PmergeMe::Sortlist(std::string string)
+bool PmergeMe::SortDeque(std::string string)
 {
-    long left_over;
-    bool is_odd = false;
-    {
-        std::stringstream stream(string);
-        while (stream.eof() == false)
-        {
-            std::string r_num1 = get_next_string(stream);
-            if (r_num1.length() == 0)
-                break;
-            if (is_numeric(r_num1) == false)
-                return false;
-            long        num1   = std::strtol(r_num1.c_str(), NULL, 10);
-            std::string r_num2 = get_next_string(stream);
-            if (r_num2.length() == 0)
-            {
-                left_over = num1;
-                is_odd    = true;
-                break;
-            }
-            if (is_numeric(r_num2) == false)
-                return false;
-            long num2 = std::strtol(r_num2.c_str(), NULL, 10);
-            if (num1 < num2)
-                std::swap(num1, num2);
-            Pair<long> pair(num1, num2);
-            _list.insert(_list.end(), pair);
-        }
-    }
-    // sorting A
-    {
-        std::list<Pair<long> >::iterator AIt = _list.begin();
-
-        bool swapped = true;
-        while (swapped && AIt != _list.end()) // iterating over the A list ..
-        {
-            swapped                               = false;
-            std::list<Pair<long> >::iterator _AIt = AIt;
-            _AIt++;
-            for (; _AIt != _list.end(); _AIt++) // iterating over the A list ..
-            {
-                if (AIt->GetA() > _AIt->GetA())
-                {
-                    ::swap((*AIt), (*_AIt));
-                    swapped = true;
-                }
-                AIt++;
-                _AIt = AIt;
-            }
-            if (swapped)
-                AIt = _list.begin();
-        }
-    }
-    {
-        std::list<Pair<long> >::iterator AIt  = _list.begin();
-        std::list<Pair<long> >::iterator AIte = _list.end();
-        for (; AIt != AIte; AIt++) // iterating over the A list ..
-        {
-            if ((*AIt).isPair() == false)
-                continue;
-            std::list<Pair<long> >::iterator _AIt  = _list.begin();
-            std::list<Pair<long> >::iterator _AIte = _list.end();
-            while (_AIt != _AIte)
-            {
-                if (AIt->GetB() <= _AIt->GetA())
-                {
-                    _list.insert(_AIt, AIt->GetB());
-                    break;
-                }
-                _AIt++;
-                if (AIt == AIte)
-                    _list.insert(_AIt, AIt->GetB());
-            }
-        }
-    }
-    {
-        if (is_odd)
-        {
-            std::list<Pair<long> >::iterator AIt  = _list.begin();
-            std::list<Pair<long> >::iterator AIte = _list.end();
-            while (AIt != AIte)
-            {
-                if (left_over <= AIt->GetA())
-                {
-                    _list.insert(AIt, left_over);
-                    break;
-                }
-                AIt++;
-                if (AIt == AIte)
-                    _list.insert(AIt, left_over);
-            }
-        }
-    }
+    (void)string;
     return true;
 }
-bool PmergeMe::SortList(std::string string)
+bool PmergeMe::SortVector(std::string string)
 {
-    std::list<std::pair<long, long> > pairs_list;
-    long                              left_over;
-    bool                              is_odd = false;
+    size_t Jacobsthals[14] = {1, 3, 5, 11, 21, 43, 85, 171, 341, 683, 1365, 2731, 5461, 10923};
+    std::vector<std::pair<long, long> > pairs_vector;
+    long                                left_over;
+    bool                                is_odd = false;
     // spliting the pairs into A and B chains
     {
         std::stringstream stream(string);
@@ -159,72 +69,100 @@ bool PmergeMe::SortList(std::string string)
             long num2 = std::strtol(r_num2.c_str(), NULL, 10);
             if (num1 < num2)
                 std::swap(num1, num2);
-            pairs_list.insert(pairs_list.end(), std::pair<long, long>(num1, num2));
+            pairs_vector.insert(pairs_vector.end(), std::pair<long, long>(num1, num2));
         }
     }
     // sorting by the A chain
+    if (pairs_vector.size() > 1)
     {
-        std::list<std::pair<long, long> >::iterator AIt = _list.begin();
-
-        bool swapped = true;
-        while (swapped && AIt != _list.end()) // iterating over the A list ..
+        if (pairs_vector[0].first > pairs_vector[1].first)
+            std::swap(pairs_vector[0], pairs_vector[1]);
+        for (size_t i = 2; i < pairs_vector.size(); i++)
         {
-            swapped                               = false;
-            std::list<Pair<long> >::iterator _AIt = AIt;
-            _AIt++;
-            for (; _AIt != _list.end(); _AIt++) // iterating over the A list ..
-            {
-                if (AIt->GetA() > _AIt->GetA())
-                {
-                    ::swap((*AIt), (*_AIt));
-                    swapped = true;
-                }
-                AIt++;
-                _AIt = AIt;
-            }
-            if (swapped)
-                AIt = _list.begin();
+            std::pair<long, long>                         pair = pairs_vector[i];
+            std::vector<std::pair<long, long> >::iterator position =
+                GetBinaryInsertPairLocationInVector(
+                    pairs_vector.begin(), pairs_vector.begin() + i, pair
+                );
+            pairs_vector.erase(pairs_vector.begin() + i);
+            pairs_vector.insert(position, pair);
         }
     }
-    // Inserting first pairs to the A chain
+    // Inserting sorted A chain to the sorted vector
+    if (pairs_vector.size())
     {
-        std::multiset<std::pair<long, long> >::iterator it = pairs_multiset.begin();
-        for (; it != pairs_multiset.end(); it++)
-            _multiset.insert(it->first);
+        std::vector<std::pair<long, long> >::iterator it = pairs_vector.begin();
+        _vector.insert(_vector.end(), it->second);
+        for (; it != pairs_vector.end(); it++)
+            _vector.insert(_vector.end(), it->first);
     }
     {
-        int  k      = 0;
-        long last_t = 0;
-        long t      = 0;
-        for (size_t i = 0; _multiset.size() < last_t; i++)
+        for (size_t i = 1; i < sizeof(Jacobsthals) / sizeof(size_t); i++)
         {
-            last_t = t;
-            t      = std::pow(2, k + 1);
-            if (k % 2 == 0)
-                t += 1;
+            size_t last_jacobsthal = Jacobsthals[i - 1];
+            size_t jacobsthal      = Jacobsthals[i];
+            if (last_jacobsthal >= pairs_vector.size())
+                break;
+            std::vector<std::pair<long, long> >::iterator it = pairs_vector.begin() + jacobsthal;
+            if (jacobsthal < pairs_vector.size())
+                it = pairs_vector.begin() + jacobsthal;
             else
-                t -= 1;
-            t /= 3;
-            std::multiset<std::pair<long, long> >::iterator it = pairs_multiset.;
-            for (; it != pairs_multiset.end(); it++)
-            {
-                // Get the index number and insert it into it's place
-                if (it->isPair() == false)
-                    continue;
-                Pair<long> A(it->GetB());
-                _mset.insert(A);
-            }
-            if (is_odd)
-                _mset.insert(left_over);
+                it = pairs_vector.end() - 1;
+            for (; it != pairs_vector.begin() + last_jacobsthal; it--)
+                BinaryInsertIntoVector(it->second);
         }
     }
+    if (is_odd)
+        BinaryInsertIntoVector(left_over);
     return true;
 }
-void PmergeMe::Print_multiset(std::string numbers)
+std::vector<std::pair<long, long> >::iterator PmergeMe::GetBinaryInsertPairLocationInVector(
+    std::vector<std::pair<long, long> >::iterator begin,
+    std::vector<std::pair<long, long> >::iterator end, std::pair<long, long> pair
+)
+{
+    std::cout << "Getting insert location for pair: (" << pair.first << "," << pair.second << ")"
+              << std::endl;
+    for (; begin != end;)
+    {
+        std::vector<std::pair<long, long> >::iterator half = begin + ((end - begin) / 2);
+        if (pair.first < half->first)
+            end = half;
+        else if (pair.first > half->first)
+            begin = half;
+        else
+        {
+            begin = half;
+            break;
+        }
+    }
+    return begin;
+}
+void PmergeMe::BinaryInsertIntoVector(long number)
+{
+    std::cout << "Binary inserting the value: " << number << std::endl;
+    std::vector<long>::iterator begin = _vector.begin();
+    std::vector<long>::iterator end   = _vector.end();
+    for (; end != begin;)
+    {
+        std::vector<long>::iterator half = begin + ((end - begin) / 2);
+        if (number < *half)
+            end = half;
+        else if (number > *half)
+            begin = half;
+        else
+        {
+            begin = half;
+            break;
+        }
+    }
+    _vector.insert(begin, number);
+}
+void PmergeMe::PrintDeque(std::string numbers)
 {
     std::stringstream stream(numbers);
     long              num;
-    std::cout << "Before using [std::multiset] : \n";
+    std::cout << "[using std::deque] Before : \n";
     while (stream.eof() == false)
     {
         std::string raw_n;
@@ -235,27 +173,17 @@ void PmergeMe::Print_multiset(std::string numbers)
         std::cout << num << ' ';
     }
     std::cout << '\n';
-    std::cout << "After using [std::multiset] : \n";
-    std::multiset<Pair<long> >::iterator it  = _mset.begin();
-    std::multiset<Pair<long> >::iterator ite = _mset.end();
-    for (; it != ite; it++)
-        std::cout << it->GetA() << ' ';
+    std::cout << "[using std::deque] After : \n";
+    std::deque<long>::iterator it = _deque.begin();
+    for (; it != _deque.end(); it++)
+        std::cout << *it << ' ';
     std::cout << '\n';
 }
-bool PmergeMe::PerformMultiSet(std::string numbers)
-{
-    if (SortMultiset(numbers) == false)
-    {
-        std::cerr << "Error invalid number\n";
-        return false;
-    }
-    return true;
-}
-void PmergeMe::Print_list(std::string numbers)
+void PmergeMe::PrintVector(std::string numbers)
 {
     std::stringstream stream(numbers);
     long              num;
-    std::cout << "Before using [std::list] : \n";
+    std::cout << "[using std::vector] Before : \n";
     while (stream.eof() == false)
     {
         std::string raw_n;
@@ -266,76 +194,60 @@ void PmergeMe::Print_list(std::string numbers)
         std::cout << num << ' ';
     }
     std::cout << '\n';
-    std::cout << "After using [std::list] : \n";
-    std::list<Pair<long> >::iterator it  = _list.begin();
-    std::list<Pair<long> >::iterator ite = _list.end();
-    for (; it != ite; it++)
-        std::cout << it->GetA() << ' ';
+    std::cout << "[using std::vector] After : \n";
+    std::vector<long>::iterator it = _vector.begin();
+    for (; it != _vector.end(); it++)
+        std::cout << *it << ' ';
     std::cout << '\n';
-}
-bool PmergeMe::PerformList(std::string numbers)
-{
-    if (Sortlist(numbers) == false)
-    {
-        std::cerr << "Error invalid number\n";
-        return false;
-    }
-    return true;
 }
 bool PmergeMe::AreSorted()
 {
     {
-        std::multiset<Pair<long> >::iterator it  = _mset.begin();
-        std::multiset<Pair<long> >::iterator _it = it;
-        _it++;
-        for (; _it != _mset.end(); it++, _it = it, _it++)
-            if (it->GetA() > _it->GetA())
+        for (size_t i = 0; _deque.size() && i < _deque.size() - 1; i++)
+            if (_deque[i] > _deque[i + 1])
                 return false;
     }
     {
-        std::list<Pair<long> >::iterator it  = _list.begin();
-        std::list<Pair<long> >::iterator _it = it;
-        _it++;
-        for (; _it != _list.end(); it++, _it = it, _it++)
-            if (it->GetA() > _it->GetA())
+        for (size_t i = 0; _deque.size() && i < _deque.size() - 1; i++)
+            if (_deque[i] > _deque[i + 1])
                 return false;
     }
     return true;
 }
-PmergeMe::PmergeMe(std::string numbers) : _list()
+PmergeMe::PmergeMe(std::string numbers)
 {
-    t_time then, now;
-    long   multiset_time;
-    long   list_time;
-    size_t count = get_count(numbers);
+    timeval then, now;
+    long    deque_time;
+    long    vector_time;
+    size_t  count = get_count(numbers);
 
     gettimeofday(&then, NULL);
-    if (SortMultiset(numbers) == false)
+    if (SortDeque(numbers) == false)
     {
         std::cerr << "Error invalid number\n";
         return;
     }
     gettimeofday(&now, NULL);
-    multiset_time = ((now.tv_sec - then.tv_sec) * 1000000) + now.tv_usec - then.tv_usec;
+    deque_time = ((now.tv_sec - then.tv_sec) * 1000000) + now.tv_usec - then.tv_usec;
     gettimeofday(&then, NULL);
-    if (Sortlist(numbers) == false)
+    if (SortVector(numbers) == false)
     {
         std::cerr << "Error invalid number\n";
         return;
     }
     gettimeofday(&now, NULL);
-    list_time = ((now.tv_sec - then.tv_sec) * 1000000) + now.tv_usec - then.tv_usec;
+    vector_time = ((now.tv_sec - then.tv_sec) * 1000000) + now.tv_usec - then.tv_usec;
     if (AreSorted() == false)
     {
         std::cerr << "Error numbers are not sorted\n";
         return;
     }
-    Print_multiset(numbers);
-    Print_list(numbers);
-    std::cout << "Time to process a range of " << count << " elements with std::multiset "
-              << multiset_time << " us\n";
-    std::cout << "Time to process a range of " << count << " elements with std::list " << list_time
-              << " us\n";
+    PrintDeque(numbers);
+    PrintVector(numbers);
+    std::cout << "Time to process a range of " << count << " elements with std::deque container "
+              << deque_time << " us\n";
+    std::cout << "Time to process a range of " << count << " elements with std::vector container "
+              << vector_time << " us\n";
 }
 PmergeMe::PmergeMe(const PmergeMe& pmm)
 {
@@ -345,8 +257,8 @@ PmergeMe& PmergeMe::operator=(const PmergeMe& pmm)
 {
     if (this != &pmm)
     {
-        _mset = pmm._mset;
-        _list = pmm._list;
+        _deque  = pmm._deque;
+        _vector = pmm._vector;
     }
     return *this;
 }

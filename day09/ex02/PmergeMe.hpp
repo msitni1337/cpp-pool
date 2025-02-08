@@ -1,22 +1,22 @@
 #pragma once
 #include <algorithm>
+#include <cmath>
 #include <cstdlib>
 #include <ctime>
+#include <deque>
 #include <iostream>
-#include <list>
 #include <set>
 #include <sstream>
 #include <string>
 #include <sys/time.h>
 #include <vector>
-#include <cmath>
 
 class PmergeMe
 {
 
 private:
-    std::list<long> _list;
-    std::vector<long>   _vector;
+    std::deque<long>  _deque;
+    std::vector<long> _vector;
 
 public:
     PmergeMe(std::string numbers);
@@ -25,11 +25,21 @@ public:
     ~PmergeMe();
 
 private:
-    bool PerformMultiSet(std::string numbers);
-    bool PerformList(std::string numbers);
-    bool SortList(std::string string);
-    bool SortMultiset(std::string string);
+    std::vector<std::pair<long, long> >::iterator GetBinaryInsertPairLocationInVector(
+        std::vector<std::pair<long, long> >::iterator begin,
+        std::vector<std::pair<long, long> >::iterator end, std::pair<long, long> pair
+    );
+    std::deque<std::pair<long, long> >::iterator BinaryInsertPairLocationInDeque(
+        std::deque<std::pair<long, long> >::iterator begin,
+        std::deque<std::pair<long, long> >::iterator end, std::pair<long, long> pair
+    );
+    void BinaryInsertIntoVector(long number);
+    void BinaryInsertIntoDeque(long number);
+    bool PerformVectorSort(std::string numbers);
+    bool PerformListSort(std::string numbers);
+    bool SortDeque(std::string string);
+    bool SortVector(std::string string);
     bool AreSorted();
+    void PrintDeque(std::string numbers);
     void PrintVector(std::string numbers);
-    void PrintMultiset(std::string numbers);
 };
