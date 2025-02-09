@@ -29,17 +29,10 @@ private:
         std::vector<std::pair<long, long> >::iterator begin,
         std::vector<std::pair<long, long> >::iterator end, std::pair<long, long> pair
     );
-    std::deque<std::pair<long, long> >::iterator BinaryInsertPairLocationInDeque(
-        std::deque<std::pair<long, long> >::iterator begin,
-        std::deque<std::pair<long, long> >::iterator end, std::pair<long, long> pair
-    );
-    void BinaryInsertIntoVector(long number);
-    void BinaryInsertIntoDeque(long number);
-    bool PerformVectorSort(std::string numbers);
-    bool PerformListSort(std::string numbers);
-    bool SortDeque(std::string string);
-    bool SortVector(std::string string);
-    bool AreSorted();
-    void PrintDeque(std::string numbers);
-    void PrintVector(std::string numbers);
+    std::vector<long>::iterator GetBinaryInsertLocationInVector(long number);
+    bool                        SortDeque(std::string string);
+    bool                        SortVector(std::string string);
+    bool                        AreSorted();
+    void                        PrintDeque(std::string numbers);
+    void                        PrintVector(std::string numbers);
 };

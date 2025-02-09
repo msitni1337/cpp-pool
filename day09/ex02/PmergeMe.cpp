@@ -82,10 +82,10 @@ bool PmergeMe::SortVector(std::string string)
             std::pair<long, long>                         pair = pairs_vector[i];
             std::vector<std::pair<long, long> >::iterator position =
                 GetBinaryInsertPairLocationInVector(
-                    pairs_vector.begin(), pairs_vector.begin() + i, pair
+                    pairs_vector.begin(), pairs_vector.begin() + (i + 1), pair
                 );
-            pairs_vector.erase(pairs_vector.begin() + i);
             pairs_vector.insert(position, pair);
+            pairs_vector.erase(pairs_vector.begin() + (i + 1));
         }
     }
     // Inserting sorted A chain to the sorted vector
@@ -97,25 +97,29 @@ bool PmergeMe::SortVector(std::string string)
             _vector.insert(_vector.end(), it->first);
     }
     {
+        size_t last_jacobsthal = Jacobsthals[0];
         for (size_t i = 1; i < sizeof(Jacobsthals) / sizeof(size_t); i++)
         {
-            size_t last_jacobsthal = Jacobsthals[i - 1];
-            size_t jacobsthal      = Jacobsthals[i];
+            size_t jacobsthal = Jacobsthals[i];
             if (last_jacobsthal >= pairs_vector.size())
                 break;
             std::vector<std::pair<long, long> >::iterator it;
             if (jacobsthal < pairs_vector.size())
-                it = pairs_vector.begin() + jacobsthal;
+                it = pairs_vector.begin() + jacobsthal - 1;
             else
                 it = (pairs_vector.end() - 1);
             for (; it != pairs_vector.begin() + (last_jacobsthal - 1); it--)
-                BinaryInsertIntoVector(it->second);
+            {
+                std::vector<long>::iterator position = GetBinaryInsertLocationInVector(it->second);
+                _vector.insert(position, it->second);
+            }
+            last_jacobsthal = jacobsthal;
         }
     }
     if (is_odd)
     {
-        std::cout << "Binary inserting left over: " << left_over << std::endl;
-        BinaryInsertIntoVector(left_over);
+        std::vector<long>::iterator position = GetBinaryInsertLocationInVector(left_over);
+        _vector.insert(position, left_over);
     }
     return true;
 }
@@ -124,13 +128,11 @@ std::vector<std::pair<long, long> >::iterator PmergeMe::GetBinaryInsertPairLocat
     std::vector<std::pair<long, long> >::iterator end, std::pair<long, long> pair
 )
 {
-    std::cout << "Getting insert location for pair: (" << pair.first << "," << pair.second << ")"
-              << std::endl;
     if (pair.first > (end - 1)->first)
         return end;
     if (pair.first < begin->first)
         return begin;
-    for (; end - begin > 2;)
+    for (; begin < end - 1;)
     {
         std::vector<std::pair<long, long> >::iterator half = begin + ((end - begin) / 2);
         if (pair.first == half->first)
@@ -143,31 +145,21 @@ std::vector<std::pair<long, long> >::iterator PmergeMe::GetBinaryInsertPairLocat
         if (pair.first > half->first)
             begin = half;
     }
-    if (pair.first <= end->first)
-        return end;
-    return begin;
+    if (!(begin < end - 1))
+    {
+        return (pair.first < begin->first) ? begin : begin + 1;
+    }
+    return end;
 }
-void PmergeMe::BinaryInsertIntoVector(long number)
+std::vector<long>::iterator PmergeMe::GetBinaryInsertLocationInVector(long number)
 {
-    std::cout << "Binary inserting the value: " << number << " into vector:" << std::endl;
-    std::vector<long>::iterator it = _vector.begin();
-    for (; it != _vector.end(); it++)
-        std::cout << *it << ", ";
-    std::cout << std::endl;
-
-    if (number > *(_vector.end() - 1))
-    {
-        _vector.insert(_vector.end(), number);
-        return;
-    }
-    if (number < *_vector.begin())
-    {
-        _vector.insert(_vector.begin(), number);
-        return;
-    }
+    if (number > _vector.back())
+        return _vector.end();
+    if (number < _vector.front())
+        return _vector.begin();
     std::vector<long>::iterator begin = _vector.begin();
-    std::vector<long>::iterator end   = _vector.end() - 1;
-    for (; end - begin > 2;)
+    std::vector<long>::iterator end   = _vector.end();
+    for (; begin < end - 1;)
     {
         std::vector<long>::iterator half = begin + ((end - begin) / 2);
         if (number == *half)
@@ -180,10 +172,11 @@ void PmergeMe::BinaryInsertIntoVector(long number)
         if (number > *half)
             begin = half;
     }
-    if (number <= *end)
-        _vector.insert(end, number);
-    else
-        _vector.insert(begin, number);
+    if (!(begin < end - 1))
+    {
+        return (number < *begin) ? begin : begin + 1;
+    }
+    return end;
 }
 void PmergeMe::PrintDeque(std::string numbers)
 {
@@ -235,8 +228,8 @@ bool PmergeMe::AreSorted()
                 return false;
     }
     {
-        for (size_t i = 0; _deque.size() && i < _deque.size() - 1; i++)
-            if (_deque[i] > _deque[i + 1])
+        for (size_t i = 0; _vector.size() && i < _vector.size() - 1; i++)
+            if (_vector[i] > _vector[i + 1])
                 return false;
     }
     return true;
@@ -271,6 +264,9 @@ PmergeMe::PmergeMe(std::string numbers)
     }
     PrintDeque(numbers);
     PrintVector(numbers);
+    if (count != _vector.size())
+    std::cout << "WARNING VECTOR NOT HAVE ALL ELEMENTS" << std::endl;
+        
     std::cout << "Time to process a range of " << count << " elements with std::deque container "
               << deque_time << " us\n";
     std::cout << "Time to process a range of " << count << " elements with std::vector container "
