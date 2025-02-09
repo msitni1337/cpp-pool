@@ -35,17 +35,13 @@ static inline size_t get_count(std::string numbers)
     }
     return count;
 }
-bool PmergeMe::SortDeque(std::string string)
-{
-    (void)string;
-    return true;
-}
-bool PmergeMe::SortVector(std::string string)
+template <class Container, class PairContainer>
+bool PmergeMe::MergeInsert(Container& container, std::string string)
 {
     size_t Jacobsthals[14] = {1, 3, 5, 11, 21, 43, 85, 171, 341, 683, 1365, 2731, 5461, 10923};
-    std::vector<std::pair<long, long> > pairs_vector;
-    long                                left_over;
-    bool                                is_odd = false;
+    PairContainer pairs_vector;
+    long          left_over;
+    bool          is_odd = false;
     // spliting the pairs into A and B chains
     {
         std::stringstream stream(string);
@@ -79,23 +75,23 @@ bool PmergeMe::SortVector(std::string string)
             std::swap(pairs_vector[0], pairs_vector[1]);
         for (size_t i = 2; i < pairs_vector.size(); i++)
         {
-            std::pair<long, long>                         pair = pairs_vector[i];
-            std::vector<std::pair<long, long> >::iterator position =
-                GetBinaryInsertPairLocationInVector(
-                    pairs_vector.begin(), pairs_vector.begin() + (i + 1), pair
-                );
+            std::pair<long, long>            pair     = pairs_vector[i];
+            typename PairContainer::iterator position = BinarySearchPair(
+                pairs_vector.begin(), pairs_vector.begin() + (i + 1), pair
+            );
             pairs_vector.insert(position, pair);
             pairs_vector.erase(pairs_vector.begin() + (i + 1));
         }
     }
-    // Inserting sorted A chain to the sorted vector
+    // Inserting sorted A chain to the container
     if (pairs_vector.size())
     {
-        std::vector<std::pair<long, long> >::iterator it = pairs_vector.begin();
-        _vector.insert(_vector.end(), it->second);
+        typename PairContainer::iterator it = pairs_vector.begin();
+        container.insert(container.end(), it->second);
         for (; it != pairs_vector.end(); it++)
-            _vector.insert(_vector.end(), it->first);
+            container.insert(container.end(), it->first);
     }
+    // Binary Inserting sorting B chain using Jacobsthals numbers
     {
         size_t last_jacobsthal = Jacobsthals[0];
         for (size_t i = 1; i < sizeof(Jacobsthals) / sizeof(size_t); i++)
@@ -103,29 +99,30 @@ bool PmergeMe::SortVector(std::string string)
             size_t jacobsthal = Jacobsthals[i];
             if (last_jacobsthal >= pairs_vector.size())
                 break;
-            std::vector<std::pair<long, long> >::iterator it;
+            typename PairContainer::iterator it;
             if (jacobsthal < pairs_vector.size())
                 it = pairs_vector.begin() + jacobsthal - 1;
             else
                 it = (pairs_vector.end() - 1);
             for (; it != pairs_vector.begin() + (last_jacobsthal - 1); it--)
             {
-                std::vector<long>::iterator position = GetBinaryInsertLocationInVector(it->second);
-                _vector.insert(position, it->second);
+                typename Container::iterator position = BinarySearch(container, it->second);
+                container.insert(position, it->second);
             }
             last_jacobsthal = jacobsthal;
         }
     }
+    // Binary Inserting sorting the left over number if array is odd
     if (is_odd)
     {
-        std::vector<long>::iterator position = GetBinaryInsertLocationInVector(left_over);
-        _vector.insert(position, left_over);
+        typename Container::iterator position = BinarySearch(container, left_over);
+        container.insert(position, left_over);
     }
     return true;
 }
-std::vector<std::pair<long, long> >::iterator PmergeMe::GetBinaryInsertPairLocationInVector(
-    std::vector<std::pair<long, long> >::iterator begin,
-    std::vector<std::pair<long, long> >::iterator end, std::pair<long, long> pair
+template <class PairIterator>
+PairIterator PmergeMe::BinarySearchPair(
+    PairIterator begin, PairIterator end, std::pair<long, long> pair
 )
 {
     if (pair.first > (end - 1)->first)
@@ -134,7 +131,7 @@ std::vector<std::pair<long, long> >::iterator PmergeMe::GetBinaryInsertPairLocat
         return begin;
     for (; begin < end - 1;)
     {
-        std::vector<std::pair<long, long> >::iterator half = begin + ((end - begin) / 2);
+        PairIterator half = begin + ((end - begin) / 2);
         if (pair.first == half->first)
         {
             end = half;
@@ -151,17 +148,18 @@ std::vector<std::pair<long, long> >::iterator PmergeMe::GetBinaryInsertPairLocat
     }
     return end;
 }
-std::vector<long>::iterator PmergeMe::GetBinaryInsertLocationInVector(long number)
+template <class Container>
+typename Container::iterator PmergeMe::BinarySearch(Container& container, long number)
 {
-    if (number > _vector.back())
-        return _vector.end();
-    if (number < _vector.front())
-        return _vector.begin();
-    std::vector<long>::iterator begin = _vector.begin();
-    std::vector<long>::iterator end   = _vector.end();
+    if (number > container.back())
+        return container.end();
+    if (number < container.front())
+        return container.begin();
+    typename Container::iterator begin = container.begin();
+    typename Container::iterator end   = container.end();
     for (; begin < end - 1;)
     {
-        std::vector<long>::iterator half = begin + ((end - begin) / 2);
+        typename Container::iterator half = begin + ((end - begin) / 2);
         if (number == *half)
         {
             end = half;
@@ -242,7 +240,8 @@ PmergeMe::PmergeMe(std::string numbers)
     size_t  count = get_count(numbers);
 
     gettimeofday(&then, NULL);
-    if (SortDeque(numbers) == false)
+    if (MergeInsert<std::deque<long>, std::deque<std::pair<long, long> > >(_deque, numbers) ==
+        false)
     {
         std::cerr << "Error invalid number\n";
         return;
@@ -250,7 +249,8 @@ PmergeMe::PmergeMe(std::string numbers)
     gettimeofday(&now, NULL);
     deque_time = ((now.tv_sec - then.tv_sec) * 1000000) + now.tv_usec - then.tv_usec;
     gettimeofday(&then, NULL);
-    if (SortVector(numbers) == false)
+    if (MergeInsert<std::vector<long>, std::vector<std::pair<long, long> > >(_vector, numbers) ==
+        false)
     {
         std::cerr << "Error invalid number\n";
         return;
@@ -265,8 +265,8 @@ PmergeMe::PmergeMe(std::string numbers)
     PrintDeque(numbers);
     PrintVector(numbers);
     if (count != _vector.size())
-    std::cout << "WARNING VECTOR NOT HAVE ALL ELEMENTS" << std::endl;
-        
+        std::cout << "WARNING VECTOR NOT HAVE ALL ELEMENTS" << std::endl;
+
     std::cout << "Time to process a range of " << count << " elements with std::deque container "
               << deque_time << " us\n";
     std::cout << "Time to process a range of " << count << " elements with std::vector container "

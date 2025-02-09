@@ -25,14 +25,13 @@ public:
     ~PmergeMe();
 
 private:
-    std::vector<std::pair<long, long> >::iterator GetBinaryInsertPairLocationInVector(
-        std::vector<std::pair<long, long> >::iterator begin,
-        std::vector<std::pair<long, long> >::iterator end, std::pair<long, long> pair
-    );
-    std::vector<long>::iterator GetBinaryInsertLocationInVector(long number);
-    bool                        SortDeque(std::string string);
-    bool                        SortVector(std::string string);
-    bool                        AreSorted();
-    void                        PrintDeque(std::string numbers);
-    void                        PrintVector(std::string numbers);
+    template <class PairIterator>
+    PairIterator BinarySearchPair(PairIterator begin, PairIterator end, std::pair<long, long> pair);
+    template <class Container>
+    typename Container::iterator BinarySearch(Container& container, long number);
+    template <class Container, class PairContainer>
+    bool MergeInsert(Container& container, std::string string);
+    bool AreSorted();
+    void PrintDeque(std::string numbers);
+    void PrintVector(std::string numbers);
 };
